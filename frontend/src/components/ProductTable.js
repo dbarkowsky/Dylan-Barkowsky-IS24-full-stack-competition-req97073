@@ -6,18 +6,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useState, useEffect } from 'react';
 
 const HeaderRow = ({ children }) => <TableCell sx={{
   fontWeight: 600,
 }}>{children}</TableCell>;
 
-const formatDate = (date) => {
-  let formattedDate = new Date(date);
-  return formattedDate.toLocaleDateString();
-}
+const ProductTable = ({ products }) => {
 
-const ProductTable = ({ data }) => {
-  console.log(data);
+
+  console.log(products);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -33,7 +31,7 @@ const ProductTable = ({ data }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
+          {products.map((row) => (
             <TableRow
               key={row.productId}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -45,7 +43,7 @@ const ProductTable = ({ data }) => {
               <TableCell >{row.scrumMasterName}</TableCell>
               <TableCell >{row.productOwnerName}</TableCell>
               <TableCell >{row.developers.join(', ')}</TableCell>
-              <TableCell >{formatDate(row.startDate)}</TableCell>
+              <TableCell >{new Date(row.startDate).toLocaleDateString()}</TableCell>
               <TableCell >{row.methodology}</TableCell>
             </TableRow>
           ))}

@@ -1,11 +1,9 @@
-import Head from 'next/head';
-import styles from '@/styles/Home.module.css';
+import './App.css';
+import ProductTable from './components/ProductTable';
 import { useState } from 'react';
-import ProductTable from '@/components/ProductTable.js';
 
-
-export default function Home() {
-  const testData = [{
+function App() {
+  let testData = [{
     productId: 1,
     productName: "Cat Food",
     productOwnerName: "Felix",
@@ -37,17 +35,11 @@ export default function Home() {
   }];
 
   const [products, setProducts] = useState(testData);
-
   return (
-    <>
-      <Head>
-        <title>Dylan Barkowsky - Competition</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <main className={styles.main}>
-        <ProductTable data={products} />
-      </main>
-    </>
-  )
+    <div className="App">
+      <ProductTable {...{ products }} />
+    </div>
+  );
 }
+
+export default App;
