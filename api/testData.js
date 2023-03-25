@@ -29,4 +29,4 @@ const testData = [{
   methodology: "Waterfall"
 }];
 
-export default { testData };
+export { testData };
