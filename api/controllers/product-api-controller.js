@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import testData from "../testData";
 
-const productModel = mongoose.model('product');
+const getProducts = (req, res) => {
+    return res.status(200).json(testData);
+}
 
-
-
-export { };
+export { getProducts };
