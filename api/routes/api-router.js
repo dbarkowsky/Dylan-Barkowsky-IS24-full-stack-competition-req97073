@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProducts } from '../controllers/product-api-controller.js';
+import { deleteProduct, getProducts } from '../controllers/product-api-controller.js';
 
 const router = express.Router();
 
@@ -8,5 +8,8 @@ router.route('/health')
 
 router.route('/products')
     .get(getProducts);
+
+router.route('/products/:productId')
+    .delete(deleteProduct);
 
 export default router;

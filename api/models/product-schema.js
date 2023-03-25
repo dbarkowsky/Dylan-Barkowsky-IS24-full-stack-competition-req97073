@@ -2,22 +2,46 @@ import yup from 'yup';
 
 // Data Schema for a New Message
 // Matches the one from the front-end App!
-const productSchema = yup.object().shape(
-    //{
-    //     name: yup
-    //         .string()
-    //         .trim()
-    //         .min(2, 'Your name must be at least ${min} characters.')
-    //         .max(15, 'Your name cannot be more than ${max} characters.')
-    //         .matches(/^[A-Za-z]+$/, 'Invalid name. Use Upper and Lowercase letters only.')
-    //         .required('Your name is required.'),
-    //     msgText: yup
-    //         .string()
-    //         .trim()
-    //         .min(2, 'Your message must be at least ${min} characters.')
-    //         .max(30, 'Your message must be no more than ${max} characters')
-    //         .required('A message is required.')
-    // }
-);
+const productSchema = yup.object().shape({
+    // productId: yup
+    //     .number()
+    //     .positive()
+    //     .min(1)
+    //     .max(64000)
+    //     .required(),
+    productName: yup
+        .string()
+        .min(3)
+        .max(50)
+        .trim()
+        .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
+        .required(),
+    productOwnerName: yup
+        .string()
+        .min(3)
+        .max(50)
+        .trim()
+        .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
+        .required(),
+    developers: yup
+        .array()
+        .required(),
+    scrumMasterName: yup
+        .string()
+        .min(3)
+        .max(50)
+        .trim()
+        .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
+        .required(),
+    startDate: yup
+        .string()
+        .trim()
+        .required(),
+    methodology: yup
+        .string()
+        .trim()
+        .matches(/^(Agile|Waterfall)$/g)
+        .required()
+});
 
 export default productSchema;

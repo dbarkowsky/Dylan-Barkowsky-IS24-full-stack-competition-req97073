@@ -11,7 +11,6 @@ const App = () => {
         const { data } = await
           axios.get(`http://localhost:3004/api/products`);
         setProducts(data);
-        console.log(data);
       } catch (error) {
         console.log('API Error: ' + error);
       }

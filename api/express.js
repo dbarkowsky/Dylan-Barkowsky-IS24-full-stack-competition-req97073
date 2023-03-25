@@ -9,6 +9,11 @@ import rateLimit from 'express-rate-limit';
 
 const app = express();
 
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100,
+});
+
 // Express middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -16,7 +21,7 @@ app.use(cookieParser());
 app.use(compression());
 app.use(morgan('dev'));
 app.use(cors());
-app.use(rateLimit());
+app.use(limiter);
 
 // Routing
 app.get('/', (req, res) => {
