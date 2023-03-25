@@ -36,7 +36,7 @@ function App() {
 
   const [products, setProducts] = useState(testData);
   return (
-    <div className="App">
+    <div className="app">
       <ProductTable {...{ products }} />
     </div>
   );
