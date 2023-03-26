@@ -1,3 +1,4 @@
+import productSchema from "../models/product-schema.js";
 import { testData } from "../testData.js";
 
 let products = [...testData];
@@ -18,8 +19,23 @@ const deleteProduct = (req, res) => {
             return res.status(404).send('Product not found.');
         }
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(400)
+            .send('Bad Request. The message in the body of the \
+    Request is either missing or malformed.');
     }
 }
 
-export { getProducts, deleteProduct };
+const postProduct = async (req, res) => {
+    try {
+        let product = await productSchema.validate(req.body);
+        product = { productId: products.length, ...product };
+        products.push(product);
+        return res.status(201).json(product);
+    } catch (e) {
+        return res.status(400)
+            .send('Bad Request. The message in the body of the \
+    Request is either missing or malformed.');
+    }
+}
+
+export { getProducts, deleteProduct, postProduct };

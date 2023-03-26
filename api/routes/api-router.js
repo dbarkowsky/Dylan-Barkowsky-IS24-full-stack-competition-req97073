@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteProduct, getProducts } from '../controllers/product-api-controller.js';
+import { deleteProduct, getProducts, postProduct } from '../controllers/product-api-controller.js';
 
 const router = express.Router();
 
@@ -7,7 +7,8 @@ router.route('/health')
     .get((req, res) => res.status(200).send('API is up and running!'));
 
 router.route('/products')
-    .get(getProducts);
+    .get(getProducts)
+    .post(postProduct);
 
 router.route('/products/:productId')
     .delete(deleteProduct);

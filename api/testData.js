@@ -1,5 +1,5 @@
 const testData = [{
-  productId: 1,
+  productId: 0,
   productName: "Cat Food",
   productOwnerName: "Felix",
   developers: [
@@ -14,7 +14,7 @@ const testData = [{
   methodology: "Agile"
 },
 {
-  productId: 2,
+  productId: 1,
   productName: "Dog Food",
   productOwnerName: "Rover",
   developers: [
