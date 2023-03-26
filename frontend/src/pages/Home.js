@@ -17,7 +17,10 @@ const Home = () => {
   }, []);
 
   return (
-    <ProductTable {...{ products }} />
+    <>
+      <h3>{`Total Products: ${products.length}`}</h3>
+      <ProductTable {...{ products }} />
+    </>
   );
 }
 
