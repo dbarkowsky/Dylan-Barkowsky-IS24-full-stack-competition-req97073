@@ -85,7 +85,7 @@ const AddProduct = () => {
       }
       let response = await axios(axiosReqConfig);
       if (response.status === 201) {
-        //navigate('/');
+        navigate('/');
       } else {
 
       }
