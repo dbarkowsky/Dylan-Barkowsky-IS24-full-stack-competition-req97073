@@ -1,6 +1,13 @@
-import { FormHelperText, Chip, Input, InputLabel, FormControl, MenuItem, Select, Button, Paper } from "@mui/material";
+import { FormHelperText, FormLabel, Chip, Input, InputLabel, FormControl, MenuItem, Select, Button, Paper, FormControlLabel } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Formik } from 'formik';
+import productSchema from '../schemas/productSchema';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
   const defaultValues = {
@@ -11,52 +18,131 @@ const AddProduct = () => {
     startDate: "",
     methodology: ""
   }
+  const validNameSchema = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g;
+
   const [formValues, setFormValues] = useState(defaultValues);
   const [methodology, setMethodology] = useState("");
   const [developers, setDevelopers] = useState([]);
-  const [currValue, setCurrValue] = useState("");
+  const [currDeveloperValue, setCurrDeveloperValue] = useState("");
+  const [dateValue, setDateValue] = useState("");
+  const [buttonDisable, setButtonDisable] = useState(true);
+  const [productName, setProductName] = useState("");
+  const [productOwner, setProductOwner] = useState("");
+  const [scrumMaster, setScrumMaster] = useState("");
 
+  const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  useEffect(() => {
+    buildFormValues();
+  }, [productName, productOwner, scrumMaster, developers, methodology, dateValue])
+
+  const buildFormValues = async () => {
     setFormValues({
-      ...formValues,
-      [name]: value,
+      productName: productName,
+      productOwnerName: productOwner,
+      developers: developers,
+      scrumMasterName: scrumMaster,
+      startDate: dateValue,
+      methodology: methodology
     });
-  };
 
-  const handleChange = (e) => {
-    setCurrValue(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(e.target.productName.value);
-  };
-
-  const handleMethodology = (e) => {
-    setMethodology(e.target.value);
-  }
-
-  const saveValue = (e) => {
-    if (e.keyCode == 32) {
-      setDevelopers((oldState) => [...oldState, e.target.value]);
-      setCurrValue('');
+    // If any are blank, submit is disabled
+    const values = Object.values(formValues);
+    console.log(values);
+    if (values.every(value => value.length !== 0)) {
+      setButtonDisable(false);
+    } else {
+      setButtonDisable(true);
     }
   }
 
-  const handleDelete = (item, index) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // await setFormValues({
+    //   productName: e.target["productName"].value,
+    //   productOwnerName: e.target["productOwnerName"].value,
+    //   developers: developers,
+    //   scrumMasterName: e.target["scrumMasterName"].value,
+    //   startDate: dateValue,
+    //   methodology: methodology
+    // })
+    // console.log(formValues)
+    // console.log(
+    //   e.target["productName"].value,
+    //   e.target["productOwnerName"].value,
+    //   e.target["scrumMasterName"].value,
+    //   dateValue,
+    //   methodology,
+    //   developers
+    // );
+    try {
+      let product = await productSchema.validate(formValues);
+      console.log(product);
+      const axiosReqConfig = {
+        url: `http://localhost:3004/api/products`,
+        method: `post`,
+        data: product
+      }
+      let response = await axios(axiosReqConfig);
+      if (response.status === 201) {
+        //navigate('/');
+      } else {
+
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // Keep developer field current
+  const handleDeveloperChange = async (e) => {
+    setCurrDeveloperValue(e.target.value);
+  };
+
+  // Saving a developer chip value
+  const saveValue = async (e) => {
+    // Check if value isn't blank
+    // Check that there aren't too many to avoid spam
+    if (e.target.value !== '') {
+      if (developers.length < 20) {
+        if (e.target.value.match(validNameSchema)) {
+          if (e.keyCode === 13) { // Enter key
+            setDevelopers([...developers, e.target.value]);
+            setCurrDeveloperValue('');
+            document.getElementById('developer-helper').innerHTML = 'Press Enter to add';
+          }
+        } else {
+          document.getElementById('developer-helper').innerHTML = `Invalid name. Use only letters, punctuation (,.-'), and spaces.`;
+        }
+      } else {
+        document.getElementById('developer-helper').innerHTML = 'Maximum 20 developers';
+      }
+    }
+  }
+
+  // Deletion of developer chips
+  const handleDelete = async (item, index) => {
     let arr = [...developers]
     arr.splice(index, 1)
-    console.log(item)
     setDevelopers(arr)
+  }
+
+  // Prevent form from submitting when adding developer chips
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+    }
+  }
+
+  const fieldStyle = {
+    width: '85%'
   }
 
   return (
     <Paper sx={{
       padding: '1em'
     }}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} noValidate>
         <Grid container spacing={2}>
           <Grid xs={12}>
             <h1>
@@ -64,42 +150,63 @@ const AddProduct = () => {
             </h1>
           </Grid>
           <Grid xs={4}>
-            <FormControl>
-              <InputLabel htmlFor="product-name">Product Name</InputLabel>
-              <Input id="product-name" name={'productName'} aria-describedby="product-name-helper" />
-              <FormHelperText id="product-name-helper">We'll never share your email.</FormHelperText>
+            <FormControl sx={fieldStyle}>
+              <InputLabel htmlFor="productName">Product Name</InputLabel>
+              <Input
+                id="productName"
+                name={'productName'}
+                onChange={(e) => {
+                  setProductName(e.target.value);
+                }}
+                aria-describedby="product-name-helper" />
+              <FormHelperText id="product-name-helper"></FormHelperText>
             </FormControl>
           </Grid>
           <Grid xs={4}>
-            <FormControl>
-              <InputLabel htmlFor="my-input">Product-Owner Name</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-              <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
+            <FormControl sx={fieldStyle}>
+              <InputLabel htmlFor="productOwnerName">Product-Owner Name</InputLabel>
+              <Input
+                id="productOwnerName"
+                name={'productOwnerName'}
+                onChange={(e) => {
+                  setProductOwner(e.target.value);
+                }}
+                aria-describedby="owner-name-helper" />
+              <FormHelperText id="owner-name-helper"></FormHelperText>
             </FormControl>
           </Grid>
           <Grid xs={4}>
-            <FormControl>
-              <InputLabel htmlFor="my-input">Scrum Master Name</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-              <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
+            <FormControl sx={fieldStyle}>
+              <InputLabel htmlFor="scrumMasterName">Scrum Master Name</InputLabel>
+              <Input
+                id="scrumMasterName"
+                name={'scrumMasterName'}
+                onChange={(e) => {
+                  setScrumMaster(e.target.value);
+                }}
+                aria-describedby="scrum-master-helper" />
+              <FormHelperText id="scrum-master-helper"></FormHelperText>
             </FormControl>
           </Grid>
           <Grid xs={4}>
-            <FormControl>
-              <InputLabel htmlFor="my-input">Start Date</InputLabel>
-              <Input id="my-input" aria-describedby="my-helper-text" />
-              <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
+            <FormControl sx={fieldStyle}>
+              <FormLabel htmlFor="startDate">Start Date</FormLabel>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker onChange={(e) => { setDateValue(e.$d.toISOString()); }} />
+              </LocalizationProvider>
             </FormControl>
           </Grid>
           <Grid xs={8}>
             <FormControl sx={{ minWidth: 200 }}>
-              <InputLabel htmlFor="my-input">Methodology</InputLabel>
+              <FormLabel htmlFor="methodology">Methodology</FormLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                id="methodology"
+                name="methodology"
                 label="Methodology"
                 value={methodology}
-                onChange={handleMethodology}
+                onChange={(e) => {
+                  setMethodology(e.target.value);
+                }}
               >
                 <MenuItem value={'Agile'}>Agile</MenuItem>
                 <MenuItem value={'Waterfall'}>Waterfall</MenuItem>
@@ -107,16 +214,17 @@ const AddProduct = () => {
             </FormControl>
           </Grid>
           <Grid xs={4}>
-            <FormControl>
-              <InputLabel htmlFor="my-input">Developers</InputLabel>
+            <FormControl sx={fieldStyle}>
+              <InputLabel htmlFor="developers">Developers</InputLabel>
               <Input
-                id="my-input"
-                aria-describedby="my-helper-text"
-                value={currValue}
-                onChange={handleChange}
+                id="developers"
+                name="developers"
+                aria-describedby="developer-helper"
+                value={currDeveloperValue}
+                onChange={handleDeveloperChange}
                 onKeyDown={saveValue}
               />
-              <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
+              <FormHelperText id="developer-helper">Press Enter to add</FormHelperText>
             </FormControl>
           </Grid>
           <Grid xs={8}>
@@ -127,10 +235,9 @@ const AddProduct = () => {
             </div>
           </Grid>
         </Grid>
-        <Button type="submit">Submit</Button>
-
+        <Button type="submit" variant="contained" disabled={buttonDisable} sx={{ margin: '2em 0' }}>Submit</Button>
       </form>
-    </Paper>
+    </Paper >
   );
 }
 
