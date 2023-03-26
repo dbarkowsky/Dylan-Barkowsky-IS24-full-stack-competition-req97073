@@ -11,24 +11,25 @@ const productSchema = yup.object().shape({
     //     .required(),
     productName: yup
         .string()
-        .min(3)
+        .min(2)
         .max(50)
         .trim()
         .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
         .required(),
     productOwnerName: yup
         .string()
-        .min(3)
+        .min(2)
         .max(50)
         .trim()
         .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
         .required(),
     developers: yup
         .array()
+        .max(5)
         .required(),
     scrumMasterName: yup
         .string()
-        .min(3)
+        .min(2)
         .max(50)
         .trim()
         .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
