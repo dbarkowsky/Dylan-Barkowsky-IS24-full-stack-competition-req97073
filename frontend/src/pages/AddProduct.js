@@ -4,23 +4,13 @@ import { useEffect, useState } from "react";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Formik } from 'formik';
 import productSchema from '../schemas/productSchema';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
-  const defaultValues = {
-    productName: "",
-    productOwnerName: "",
-    developers: [],
-    scrumMasterName: "",
-    startDate: "",
-    methodology: ""
-  }
   const validNameSchema = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g;
 
-  const [formValues, setFormValues] = useState(defaultValues);
   const [methodology, setMethodology] = useState("");
   const [developers, setDevelopers] = useState([]);
   const [currDeveloperValue, setCurrDeveloperValue] = useState("");
@@ -33,50 +23,37 @@ const AddProduct = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    buildFormValues();
-  }, [productName, productOwner, scrumMaster, developers, methodology, dateValue])
-
-  const buildFormValues = async () => {
-    setFormValues({
+    let product = {
       productName: productName,
       productOwnerName: productOwner,
       developers: developers,
       scrumMasterName: scrumMaster,
       startDate: dateValue,
       methodology: methodology
-    });
-
+    };
     // If any are blank, submit is disabled
-    const values = Object.values(formValues);
+    const values = Object.values(product);
     console.log(values);
     if (values.every(value => value.length !== 0)) {
       setButtonDisable(false);
     } else {
       setButtonDisable(true);
     }
-  }
+  }, [productName, productOwner, scrumMaster, developers, methodology, dateValue])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // await setFormValues({
-    //   productName: e.target["productName"].value,
-    //   productOwnerName: e.target["productOwnerName"].value,
-    //   developers: developers,
-    //   scrumMasterName: e.target["scrumMasterName"].value,
-    //   startDate: dateValue,
-    //   methodology: methodology
-    // })
-    // console.log(formValues)
-    // console.log(
-    //   e.target["productName"].value,
-    //   e.target["productOwnerName"].value,
-    //   e.target["scrumMasterName"].value,
-    //   dateValue,
-    //   methodology,
-    //   developers
-    // );
+    let product = {
+      productName: e.target["productName"].value,
+      productOwnerName: e.target["productOwnerName"].value,
+      developers: developers,
+      scrumMasterName: e.target["scrumMasterName"].value,
+      startDate: dateValue,
+      methodology: methodology
+    };
+
     try {
-      let product = await productSchema.validate(formValues);
+      product = await productSchema.validate(product);
       console.log(product);
       const axiosReqConfig = {
         url: `http://localhost:3004/api/products`,
@@ -100,7 +77,7 @@ const AddProduct = () => {
   };
 
   // Saving a developer chip value
-  const saveValue = async (e) => {
+  const saveValue = (e) => {
     // Check if value isn't blank
     // Check that there aren't too many to avoid spam
     if (e.target.value !== '') {
@@ -121,7 +98,7 @@ const AddProduct = () => {
   }
 
   // Deletion of developer chips
-  const handleDelete = async (item, index) => {
+  const handleDelete = (item, index) => {
     let arr = [...developers]
     arr.splice(index, 1)
     setDevelopers(arr)
