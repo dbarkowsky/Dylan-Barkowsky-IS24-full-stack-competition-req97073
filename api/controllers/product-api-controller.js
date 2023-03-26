@@ -30,9 +30,18 @@ const putProduct = async (req, res) => {
         // Does the body match the schema?
         let product = await productSchema.validate(req.body);
 
-        // Delete original
+        // Get original
         let { productId } = req.params;
         let location = products.findIndex((product) => product.productId == parseInt(productId));
+        const original = products.at(location);
+
+        // Check that date was not altered in some way.
+        console.log(product.startDate, original.startDate)
+        if (product.startDate != original.startDate) {
+            return res.status(403).send('Start date may not be altered.');
+        }
+
+        // Delete original
         if (location >= 0) {
             products.splice(location, 1);
         } else {
