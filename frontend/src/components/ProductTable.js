@@ -6,16 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useState, useEffect } from 'react';
-
-const HeaderRow = ({ children }) => <TableCell sx={{
-  fontWeight: 600,
-}}>{children}</TableCell>;
+import HeaderRow from './HeaderRow';
 
 const ProductTable = ({ products }) => {
-
-
-  console.log(products);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

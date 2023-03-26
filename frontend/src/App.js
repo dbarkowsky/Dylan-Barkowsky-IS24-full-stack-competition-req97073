@@ -1,26 +1,23 @@
 import './App.css';
-import ProductTable from './components/ProductTable';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import Home from './pages/Home';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AddProduct from './pages/AddProduct';
+import EditProduct from './pages/EditProduct';
 
 const App = () => {
-  const [products, setProducts] = useState([]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await
-          axios.get(`http://localhost:3004/api/products`);
-        setProducts(data);
-      } catch (error) {
-        console.log('API Error: ' + error);
-      }
-    })();
-  }, []);
-
   return (
-    <div className="app">
-      <ProductTable {...{ products }} />
-    </div>
+
+    <BrowserRouter>
+      <div className='app'>
+        <Routes>
+          <Route path="/">
+            <Route index element={<Home />} />
+            <Route path="product/:productId" element={<EditProduct />} />
+            <Route path="product/new" element={<AddProduct />} />
+          </Route>
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
