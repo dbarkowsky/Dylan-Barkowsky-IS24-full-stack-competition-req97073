@@ -118,7 +118,7 @@ const EditProduct = () => {
     // Check if value isn't blank
     // Check that there aren't too many to avoid spam
     if (e.target.value !== '') {
-      if (developers.length < 20) {
+      if (developers.length < 5) {
         if (e.target.value.match(validNameSchema)) {
           if (e.keyCode === 13) { // Enter key
             setDevelopers([...developers, e.target.value]);
@@ -129,7 +129,7 @@ const EditProduct = () => {
           document.getElementById('developer-helper').innerHTML = `Invalid name. Use only letters, punctuation (,.-'), and spaces.`;
         }
       } else {
-        document.getElementById('developer-helper').innerHTML = 'Maximum 20 developers';
+        document.getElementById('developer-helper').innerHTML = 'Maximum 5 developers';
       }
     }
   }

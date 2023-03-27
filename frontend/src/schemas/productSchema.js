@@ -17,6 +17,7 @@ const productSchema = yup.object().shape({
     .required(),
   developers: yup
     .array()
+    .max(5)
     .required(),
   scrumMasterName: yup
     .string()
