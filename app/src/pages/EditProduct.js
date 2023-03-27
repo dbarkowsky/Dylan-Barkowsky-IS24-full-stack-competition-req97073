@@ -17,6 +17,7 @@ const EditProduct = () => {
 
   const { productId } = useParams();
 
+  // Retrieve existing product to populate fields
   useEffect(() => {
     (async () => {
       try {
@@ -51,6 +52,7 @@ const EditProduct = () => {
     })();
   }, [productId]);
 
+  // Submit altered product as put request
   const handleSubmit = async (e) => {
     e.preventDefault();
     let product = {
@@ -80,11 +82,30 @@ const EditProduct = () => {
     }
   };
 
+  // Delete data that matches the productID
+  const handleDelete = async () => {
+    try {
+      const axiosReqConfig = {
+        url: `http://${Constants.HOSTNAME}:${Constants.API_PORT}/api/products/${productId}`,
+        method: `delete`,
+      }
+      let response = await axios(axiosReqConfig);
+      if (response.status === 204) {
+        navigate('/');
+      } else {
+
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <ProductForm
       editMode={true}
       {...{
         handleSubmit,
+        handleDelete,
         setProductName,
         productName,
         setProductOwnerName,

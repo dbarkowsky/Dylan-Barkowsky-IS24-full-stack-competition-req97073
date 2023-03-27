@@ -41,7 +41,7 @@ const ProductTable = ({ products }) => {
               <TableCell >{row.developers.join(', ')}</TableCell>
               <TableCell >{new Date(row.startDate).toLocaleDateString()}</TableCell>
               <TableCell >{row.methodology}</TableCell>
-              <TableCell ><Button component={Link} to={`/product/${row.productId}`} >Edit</Button></TableCell>
+              <TableCell ><Button variant='outlined' component={Link} to={`/product/${row.productId}`} >Edit</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>

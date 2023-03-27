@@ -23,11 +23,12 @@ const ProductForm = ({
   methodology,
   setDevelopers,
   developers,
-  editMode
+  editMode // Boolean (if it's the edit page)
 }) => {
   const [currDeveloperValue, setCurrDeveloperValue] = useState("");
   const [buttonDisable, setButtonDisable] = useState(true);
 
+  // Determine if the save button should be active or not
   useEffect(() => {
     let product = {
       productName,
@@ -97,9 +98,9 @@ const ProductForm = ({
       <form onSubmit={handleSubmit} onKeyDown={handleKeyDown} noValidate>
         <Grid container spacing={2}>
           <Grid xs={12}>
-            <h1>
+            <h2>
               {editMode ? 'Edit' : 'Add'} Product
-            </h1>
+            </h2>
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
@@ -194,8 +195,31 @@ const ProductForm = ({
             </div>
           </Grid>
         </Grid>
-        <Button component={Link} to={'/'} variant="text" sx={{ margin: '2em 1em' }}>Back</Button>
-        <Button type="submit" variant="contained" disabled={buttonDisable} sx={{ margin: '2em 0' }}>Save</Button>
+        <div id="button-wrapper" style={{
+          display: 'flex',
+          justifyContent: 'space-between'
+        }}>
+          <div id="left-buttons">
+            <Button component={Link} to={'/'} variant="outlined" sx={{ margin: '2em 1em' }}>Back</Button>
+            <Button type="submit" variant="contained" disabled={buttonDisable} sx={{ margin: '2em 0' }}>Save</Button>
+          </div>
+          {
+            editMode
+              ? <Button
+                variant="outlined"
+                color='error'
+                onClick={handleDelete}
+                sx={{
+                  height: '3em',
+                  marginTop: '2em',
+                  backgroundColor: 'lightred'
+                }}
+              >Delete</Button>
+              : <></>
+          }
+        </div>
+
+
       </form>
     </Paper >
   );

@@ -15,6 +15,7 @@ const AddProduct = () => {
 
   const navigate = useNavigate();
 
+  // Submits product as post request
   const handleSubmit = async (e) => {
     e.preventDefault();
     let product = {
@@ -35,7 +36,7 @@ const AddProduct = () => {
       }
       let response = await axios(axiosReqConfig);
       if (response.status === 201) {
-        navigate('/');
+        navigate('/'); // Return home
       } else {
 
       }
