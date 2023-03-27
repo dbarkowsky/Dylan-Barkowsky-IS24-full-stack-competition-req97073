@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import productSchema from '../schemas/productSchema';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Constants from '../constants/Constants';
 import ProductForm from "../components/ProductForm";
 
-const AddProduct = () => {
+const AddProduct = ({ setErrorControl }) => {
   const [methodology, setMethodology] = useState("");
   const [developers, setDevelopers] = useState([]);
-  const [startDate, setStartDate] = useState(); // Leave null to set to current date
+  const [startDate, setStartDate] = useState(new Date(Date.now()).toISOString()); // Must fill with something, no undefined allowed
   const [productName, setProductName] = useState("");
   const [productOwnerName, setProductOwnerName] = useState("");
   const [scrumMasterName, setScrumMasterName] = useState("");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setErrorControl({ disabled: true });
+  }, [setErrorControl]);
 
   // Submits product as post request
   const handleSubmit = async (e) => {
@@ -27,21 +31,31 @@ const AddProduct = () => {
       methodology
     };
 
+    let response;
     try {
-      product = await productSchema.validate(product);
+      // Validate form data
+      product = await productSchema.validate(product).catch(() => {
+        throw { name: 'verify' };
+      });
+
+      // Setup and send product data
       const axiosReqConfig = {
         url: `http://${Constants.HOSTNAME}:${Constants.API_PORT}/api/products`,
         method: `post`,
         data: product
       }
-      let response = await axios(axiosReqConfig);
+      response = await axios(axiosReqConfig);
       if (response.status === 201) {
         navigate('/'); // Return home
-      } else {
-
+        setErrorControl({ disabled: true });
       }
     } catch (e) {
-      console.log(e);
+      console.log(e)
+      if (e.name === 'verify') {
+        setErrorControl({ disabled: false, text: `The product is either missing fields or has invalid values. Please review each field and remove any special characters.` });
+
+      } else
+        setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
     }
   };
 

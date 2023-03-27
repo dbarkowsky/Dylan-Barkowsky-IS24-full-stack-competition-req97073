@@ -40,7 +40,13 @@ const ProductForm = ({
     };
     // If any are blank, submit is disabled
     const values = Object.values(product);
-    if (values.every(value => value.length !== 0)) {
+    console.log(values);
+    if (values.every(value => {
+      if (value && value.length !== 0) {
+        return true;
+      }
+      return false;
+    })) {
       setButtonDisable(false);
     } else {
       setButtonDisable(true);

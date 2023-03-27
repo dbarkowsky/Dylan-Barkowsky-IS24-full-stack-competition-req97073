@@ -21,8 +21,8 @@ const App = () => {
           <Routes>
             <Route path="/">
               <Route index element={<Home {...{ setErrorControl }} />} />
-              <Route path="product/:productId" element={<EditProduct />} />
-              <Route path="product/new" element={<AddProduct />} />
+              <Route path="product/:productId" element={<EditProduct {...{ setErrorControl }} />} />
+              <Route path="product/new" element={<AddProduct {...{ setErrorControl }} />} />
             </Route>
           </Routes>
         </div>

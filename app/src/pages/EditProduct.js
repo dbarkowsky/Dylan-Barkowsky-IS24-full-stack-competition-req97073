@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Constants from '../constants/Constants';
 import ProductForm from "../components/ProductForm";
 
-const EditProduct = () => {
+const EditProduct = ({ setErrorControl }) => {
   const [methodology, setMethodology] = useState("");
   const [developers, setDevelopers] = useState([]);
   const [startDate, setStartDate] = useState("");
@@ -20,12 +20,14 @@ const EditProduct = () => {
   // Retrieve existing product to populate fields
   useEffect(() => {
     (async () => {
+      setErrorControl({ disabled: true });
       try {
         const axiosReqConfig = {
           url: `http://${Constants.HOSTNAME}:${Constants.API_PORT}/api/products/${productId}`,
           method: `get`,
         }
         let response = await axios(axiosReqConfig);
+        console.log(response, 'hi');
         if (response.status === 200) {
           // Populate values with existing record
           let {
@@ -43,14 +45,13 @@ const EditProduct = () => {
           setDevelopers(developers);
           setStartDate(startDate);
           setMethodology(methodology);
-        } else {
-          // Post error message
         }
       } catch (e) {
         console.log(e);
+        setErrorControl({ disabled: false, text: `Either this product does not exist or the API is unreachable. Contact your administrator or try again later.` });
       }
     })();
-  }, [productId]);
+  }, [productId, setErrorControl]);
 
   // Submit altered product as put request
   const handleSubmit = async (e) => {
@@ -73,12 +74,17 @@ const EditProduct = () => {
       }
       let response = await axios(axiosReqConfig);
       if (response.status === 200) {
+        setErrorControl({ disabled: true });
         navigate('/');
-      } else {
-
+      } else if (response.status === 404) {
+        setErrorControl({ disabled: false, text: `That product could not be found. Please check that the product still exists.` });
+      } else if (response.status === 403) {
+        // Shouldn't be able to get here, but just in case...
+        setErrorControl({ disabled: false, text: `Product date may not be changed.` });
       }
     } catch (e) {
       console.log(e);
+      setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
     }
   };
 
@@ -91,12 +97,15 @@ const EditProduct = () => {
       }
       let response = await axios(axiosReqConfig);
       if (response.status === 204) {
+        setErrorControl({ disabled: true });
         navigate('/');
       } else {
-
+        // Only if 404 status
+        setErrorControl({ disabled: false, text: `That product could not be found. Please check that the product still exists.` });
       }
     } catch (e) {
       console.log(e);
+      setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
     }
   }
 
