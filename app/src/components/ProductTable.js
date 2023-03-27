@@ -27,10 +27,10 @@ const ProductTable = ({ products }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map((row) => (
+          {products.map((row, index) => (
             <TableRow
               key={row.productId}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: index % 2 === 0 ? 'white' : '#ededed' }}
             >
               <TableCell component="th" scope="row">
                 {row.productId}
