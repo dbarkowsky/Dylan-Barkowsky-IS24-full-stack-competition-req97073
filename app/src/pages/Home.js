@@ -1,26 +1,25 @@
 import ProductTable from "../components/ProductTable";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Constants from '../constants/Constants';
 
 const Home = ({ setErrorControl }) => {
   const [products, setProducts] = useState([]);
-  const API_PORT = process.env.API_PORT || 3000;
-  const HOSTNAME = process.env.HOSTNAME || 'localhost';
 
   // Get and sort products from server
   useEffect(() => {
     (async () => {
       try {
         const { data } = await
-          axios.get(`http://${HOSTNAME}:${API_PORT}/api/products`);
+          axios.get(`http://${Constants.HOSTNAME}:${Constants.API_PORT}/api/products`);
         setProducts(data.sort((a, b) => a.productId - b.productId));
         setErrorControl({ disabled: true });
       } catch (error) {
         console.log('API Error: ' + error);
-        setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached.` });
+        setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
       }
     })();
-  }, [HOSTNAME, API_PORT, setErrorControl]);
+  }, [setErrorControl]);
 
   return (
     <>
