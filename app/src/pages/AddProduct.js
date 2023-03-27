@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 
 const AddProduct = () => {
   const validNameSchema = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g;
+  const API_PORT = process.env.API_PORT || 3000;
+  const HOSTNAME = process.env.HOSTNAME || 'localhost'
 
   const [methodology, setMethodology] = useState("");
   const [developers, setDevelopers] = useState([]);
@@ -56,7 +58,7 @@ const AddProduct = () => {
       product = await productSchema.validate(product);
       console.log(product);
       const axiosReqConfig = {
-        url: `http://localhost:3004/api/products`,
+        url: `http://${HOSTNAME}:${API_PORT}/api/products`,
         method: `post`,
         data: product
       }

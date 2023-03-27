@@ -8,6 +8,7 @@ const NavBar = () => {
     textDecoration: 'none',
     display: 'inline'
   };
+
   return (
     <Grid container style={{
       borderBottom: 'solid black 1px',

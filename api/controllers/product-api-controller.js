@@ -24,9 +24,11 @@ const getProduct = (req, res) => {
 
 const deleteProduct = (req, res) => {
     try {
+        // Find product
         let { productId } = req.params;
         let location = products.findIndex((product) => product.productId == parseInt(productId));
 
+        // Was product found? If not, 404
         if (location >= 0) {
             products.splice(location, 1);
             return res.status(204).send(`Product ${productId} deleted.`);
@@ -76,9 +78,12 @@ const putProduct = async (req, res) => {
 
 const postProduct = async (req, res) => {
     try {
+        // Validate incoming product
         let product = await productSchema.validate(req.body);
+        // Get new id and add to data
         product = { productId: ++highestID, ...product };
         products.push(product);
+
         return res.status(201).json(product);
     } catch (e) {
         return res.status(400)

@@ -11,6 +11,8 @@ import dayjs from 'dayjs';
 
 const EditProduct = () => {
   const validNameSchema = /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g;
+  const API_PORT = process.env.API_PORT || 3000;
+  const HOSTNAME = process.env.HOSTNAME || 'localhost'
 
   const [methodology, setMethodology] = useState("");
   const [developers, setDevelopers] = useState([]);
@@ -29,7 +31,7 @@ const EditProduct = () => {
     (async () => {
       try {
         const axiosReqConfig = {
-          url: `http://localhost:3004/api/products/${productId}`,
+          url: `http://${HOSTNAME}:${API_PORT}/api/products/${productId}`,
           method: `get`,
         }
         let response = await axios(axiosReqConfig);
@@ -58,7 +60,7 @@ const EditProduct = () => {
         console.log(e);
       }
     })();
-  }, [productId]);
+  }, [productId, HOSTNAME, API_PORT]);
 
   useEffect(() => {
     let product = {
@@ -93,7 +95,7 @@ const EditProduct = () => {
       product = await productSchema.validate(product);
       console.log(product);
       const axiosReqConfig = {
-        url: `http://localhost:3004/api/products/${productId}`,
+        url: `http://${HOSTNAME}:${API_PORT}/api/products/${productId}`,
         method: `put`,
         data: product
       }

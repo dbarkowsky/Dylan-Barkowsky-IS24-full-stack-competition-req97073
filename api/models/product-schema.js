@@ -3,12 +3,6 @@ import yup from 'yup';
 // Data Schema for a New Message
 // Matches the one from the front-end App!
 const productSchema = yup.object().shape({
-    // productId: yup
-    //     .number()
-    //     .positive()
-    //     .min(1)
-    //     .max(64000)
-    //     .required(),
     productName: yup
         .string()
         .min(2)

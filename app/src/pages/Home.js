@@ -4,17 +4,19 @@ import axios from 'axios';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const API_PORT = process.env.API_PORT || 3000;
+  const HOSTNAME = process.env.HOSTNAME || 'localhost'
   useEffect(() => {
     (async () => {
       try {
         const { data } = await
-          axios.get(`http://localhost:3004/api/products`);
+          axios.get(`http://${HOSTNAME}:${API_PORT}/api/products`);
         setProducts(data.sort((a, b) => a.productId - b.productId));
       } catch (error) {
         console.log('API Error: ' + error);
       }
     })();
-  }, []);
+  }, [HOSTNAME, API_PORT]);
 
   return (
     <>
