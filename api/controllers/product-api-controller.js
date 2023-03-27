@@ -7,6 +7,20 @@ const getProducts = (req, res) => {
     return res.status(200).json(products);
 }
 
+const getProduct = (req, res) => {
+    // Get original
+    let { productId } = req.params;
+    let location = products.findIndex((product) => product.productId == parseInt(productId));
+    const original = products.at(location);
+
+    // If it exists
+    if (location !== -1) {
+        return res.status(200).json(original);
+    } else {
+        return res.status(404).send('Product not found.');
+    }
+}
+
 const deleteProduct = (req, res) => {
     try {
         let { productId } = req.params;
@@ -72,4 +86,4 @@ const postProduct = async (req, res) => {
     }
 }
 
-export { getProducts, deleteProduct, postProduct, putProduct };
+export { getProducts, getProduct, deleteProduct, postProduct, putProduct };

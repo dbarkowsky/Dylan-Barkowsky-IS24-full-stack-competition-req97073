@@ -212,7 +212,7 @@ const AddProduct = () => {
             </div>
           </Grid>
         </Grid>
-        <Button type="submit" variant="contained" disabled={buttonDisable} sx={{ margin: '2em 0' }}>Submit</Button>
+        <Button type="submit" variant="contained" disabled={buttonDisable} sx={{ margin: '2em 0' }}>Save</Button>
       </form>
     </Paper >
   );

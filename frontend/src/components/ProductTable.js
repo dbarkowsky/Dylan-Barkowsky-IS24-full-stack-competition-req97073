@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import HeaderRow from './HeaderRow';
+import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const ProductTable = ({ products }) => {
   return (
@@ -21,6 +23,7 @@ const ProductTable = ({ products }) => {
             <HeaderRow >Developers</HeaderRow>
             <HeaderRow >Start Date</HeaderRow>
             <HeaderRow >Methodology</HeaderRow>
+            <HeaderRow></HeaderRow>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -38,6 +41,7 @@ const ProductTable = ({ products }) => {
               <TableCell >{row.developers.join(', ')}</TableCell>
               <TableCell >{new Date(row.startDate).toLocaleDateString()}</TableCell>
               <TableCell >{row.methodology}</TableCell>
+              <TableCell ><Button component={Link} to={`/product/${row.productId}`} >Edit</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>

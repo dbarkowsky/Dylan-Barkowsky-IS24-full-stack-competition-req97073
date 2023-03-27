@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteProduct, getProducts, postProduct, putProduct } from '../controllers/product-api-controller.js';
+import { deleteProduct, getProduct, getProducts, postProduct, putProduct } from '../controllers/product-api-controller.js';
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ router.route('/products')
     .post(postProduct);
 
 router.route('/products/:productId')
+    .get(getProduct)
     .delete(deleteProduct)
     .put(putProduct);
 

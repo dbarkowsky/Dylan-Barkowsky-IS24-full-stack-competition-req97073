@@ -9,7 +9,7 @@ const Home = () => {
       try {
         const { data } = await
           axios.get(`http://localhost:3004/api/products`);
-        setProducts(data);
+        setProducts(data.sort((a, b) => a.productId - b.productId));
       } catch (error) {
         console.log('API Error: ' + error);
       }
