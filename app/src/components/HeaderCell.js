@@ -1,6 +1,6 @@
 import { TableCell } from "@mui/material";
 
-const HeaderRow = ({ children }) => (
+const HeaderCell = ({ children }) => (
   <TableCell sx={{
     fontWeight: 600,
   }}>
@@ -8,4 +8,4 @@ const HeaderRow = ({ children }) => (
   </TableCell>
 );
 
-export default HeaderRow;
+export default HeaderCell;

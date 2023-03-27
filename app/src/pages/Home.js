@@ -5,7 +5,9 @@ import axios from 'axios';
 const Home = () => {
   const [products, setProducts] = useState([]);
   const API_PORT = process.env.API_PORT || 3000;
-  const HOSTNAME = process.env.HOSTNAME || 'localhost'
+  const HOSTNAME = process.env.HOSTNAME || 'localhost';
+
+  // Get and sort products from server
   useEffect(() => {
     (async () => {
       try {
