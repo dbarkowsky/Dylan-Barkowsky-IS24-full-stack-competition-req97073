@@ -5,7 +5,7 @@ const testData = [
     productOwnerName: "Lance Pratt",
     scrumMasterName: "Sonia Hendrix",
     developers: ["Borland", "Sibelius", "Cakewalk", "Microsoft"],
-    startDate: '2023-03-01T08:00:00.000Z',
+    startDate: '2023/03/01',
     methodology: "Agile"
   },
   {
@@ -14,7 +14,7 @@ const testData = [
     productOwnerName: "Amethyst Salazar",
     scrumMasterName: "Dara Gamble",
     developers: ["Finale", "Sibelius", "Yahoo"],
-    startDate: '2020-03-21T08:00:00.000Z',
+    startDate: '2020-03-21',
     methodology: "Agile"
   },
   {
@@ -23,7 +23,7 @@ const testData = [
     productOwnerName: "Phoebe Holmes",
     scrumMasterName: "Damon Sharpe",
     developers: ["Cakewalk", "Chami", "Google", "Borland"],
-    startDate: '2013-01-02T08:00:00.000Z',
+    startDate: '2013-01-02',
     methodology: "Waterfall"
   },
   {
@@ -32,7 +32,7 @@ const testData = [
     productOwnerName: "Lareina Schneider",
     scrumMasterName: "Gregory Flowers",
     developers: ["Borland", "Cakewalk"],
-    startDate: '2020-07-20T08:00:00.000Z',
+    startDate: '2020-07-20',
     methodology: "Waterfall"
   },
   {
@@ -41,7 +41,7 @@ const testData = [
     productOwnerName: "Cullen Mueller",
     scrumMasterName: "Ocean Albert",
     developers: ["Lavasoft", "Apple", "Cakewalk", "Microsoft"],
-    startDate: '2010-12-25T08:00:00.000Z',
+    startDate: '2010-12-25',
     methodology: "Agile"
   }
 ];

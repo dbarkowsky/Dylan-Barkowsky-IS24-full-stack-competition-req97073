@@ -8,7 +8,7 @@ const productSchema = yup.object().shape({
         .min(2)
         .max(50)
         .trim()
-        .matches(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g)
+        .matches(/^[a-zA-Z0-9]+(([',. -][a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$/g)
         .required(),
     productOwnerName: yup
         .string()
