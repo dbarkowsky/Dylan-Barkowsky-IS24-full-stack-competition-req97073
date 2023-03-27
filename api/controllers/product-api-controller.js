@@ -2,6 +2,7 @@ import productSchema from "../models/product-schema.js";
 import { testData } from "../testData.js";
 
 let products = [...testData];
+let highestID = products.reduce((acc, cur) => cur.productId > acc.productId ? cur : acc).productId;
 
 const getProducts = (req, res) => {
     return res.status(200).json(products);
@@ -76,7 +77,7 @@ const putProduct = async (req, res) => {
 const postProduct = async (req, res) => {
     try {
         let product = await productSchema.validate(req.body);
-        product = { productId: products.length, ...product };
+        product = { productId: ++highestID, ...product };
         products.push(product);
         return res.status(201).json(product);
     } catch (e) {
