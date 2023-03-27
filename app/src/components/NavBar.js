@@ -21,8 +21,7 @@ const NavBar = () => {
       <Grid xs="auto"></Grid>
       <Grid xs={3} alignSelf={'right'}
         sx={{
-          display: 'grid',
-          alignItems: 'end',
+          display: 'inline',
           textAlign: 'end'
         }}>
         <Button
@@ -30,7 +29,7 @@ const NavBar = () => {
           to={'/product/new'}
           variant='outlined'
           sx={{
-            marginBottom: '1em',
+            marginTop: '2em',
             width: '200px'
           }}
         >+ Add Product</Button>
