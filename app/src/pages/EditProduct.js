@@ -66,7 +66,10 @@ const EditProduct = ({ setErrorControl }) => {
     };
 
     try {
-      product = await productSchema.validate(product);
+      product = await productSchema.validate(product).catch(() => {
+        // eslint-disable-next-line
+        throw { name: 'verify' };
+      });
       const axiosReqConfig = {
         url: `http://${Constants.HOSTNAME}:${Constants.API_PORT}/api/products/${productId}`,
         method: `put`,
@@ -83,8 +86,12 @@ const EditProduct = ({ setErrorControl }) => {
         setErrorControl({ disabled: false, text: `Product date may not be changed.` });
       }
     } catch (e) {
-      console.log(e);
-      setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
+      if (e.name === 'verify') {
+        setErrorControl({ disabled: false, text: `The product is either missing fields or has invalid values. Please review each field and remove any special characters.` });
+
+      } else {
+        setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
+      }
     }
   };
 

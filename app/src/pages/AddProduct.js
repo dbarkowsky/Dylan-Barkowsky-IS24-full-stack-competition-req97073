@@ -35,6 +35,7 @@ const AddProduct = ({ setErrorControl }) => {
     try {
       // Validate form data
       product = await productSchema.validate(product).catch(() => {
+        // eslint-disable-next-line
         throw { name: 'verify' };
       });
 
@@ -54,8 +55,9 @@ const AddProduct = ({ setErrorControl }) => {
       if (e.name === 'verify') {
         setErrorControl({ disabled: false, text: `The product is either missing fields or has invalid values. Please review each field and remove any special characters.` });
 
-      } else
+      } else {
         setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
+      }
     }
   };
 
