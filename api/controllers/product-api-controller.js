@@ -50,22 +50,22 @@ const putProduct = async (req, res) => {
         let location = products.findIndex((product) => product.productId == parseInt(productId));
         const original = products.at(location);
 
+        // Does original exist?
+        if (location === -1) {
+            return res.status(404).send('Product not found.');
+        }
+
         // Check that date was not altered in some way.
-        console.log(product.startDate, original.startDate)
         if (product.startDate != original.startDate) {
             return res.status(403).send('Start date may not be altered.');
         }
 
-        // Delete original
-        if (location >= 0) {
-            products.splice(location, 1);
-        } else {
-            return res.status(404).send('Product not found.');
+        // Update object
+        products[location] = {
+            productId,
+            ...product
         }
 
-        // Add new
-        product = { productId: productId, ...product };
-        products.push(product);
         return res.status(200).json(product);
     } catch (e) {
         return res.status(400)
