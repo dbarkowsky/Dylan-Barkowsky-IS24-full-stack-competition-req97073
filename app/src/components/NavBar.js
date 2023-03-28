@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Button } from "@mui/material";
 
 const NavBar = () => {
@@ -10,32 +9,26 @@ const NavBar = () => {
   };
 
   return (
-    <Grid container style={{
-      borderBottom: 'solid black 1px',
-      justifyContent: 'space-between'
-    }}>
-      <Grid xs="auto">
-        <Link to={'/'} style={removeLinkStyle} >
-          <h1>ProductTracker</h1>
-        </Link>
-      </Grid>
-      <Grid xs="auto"></Grid>
-      <Grid xs={3} alignSelf={'right'}
+    <div style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: '1em',
+      paddingBottom: '1em',
+      borderBottom: 'solid 1px black'
+    }}
+    >
+      <Link to={'/'} style={removeLinkStyle} >
+        <h1>ProductTracker</h1>
+      </Link>
+      <Button
+        component={Link}
+        to={'/product/new'}
+        variant='outlined'
         sx={{
-          display: 'inline',
-          textAlign: 'end'
-        }}>
-        <Button
-          component={Link}
-          to={'/product/new'}
-          variant='outlined'
-          sx={{
-            marginTop: '2em',
-            width: '200px'
-          }}
-        >+ Add Product</Button>
-      </Grid>
-    </Grid >
+          marginTop: '2em',
+        }}
+      >+ Add Product</Button>
+    </div>
   );
 }
 

@@ -87,7 +87,7 @@ const EditProduct = ({ setErrorControl }) => {
       }
     } catch (e) {
       if (e.name === 'verify') {
-        setErrorControl({ disabled: false, text: `The product is either missing fields or has invalid values. Please review each field and remove any special characters.` });
+        setErrorControl({ disabled: false, text: `The product has fields with invalid values. Please see the highlighted fields and make the suggested corrections.` });
 
       } else {
         setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });

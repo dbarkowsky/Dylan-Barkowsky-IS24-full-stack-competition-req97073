@@ -1,4 +1,4 @@
-import { FormHelperText, FormLabel, Chip, Input, InputLabel, FormControl, MenuItem, Select, Button, Paper } from "@mui/material";
+import { FormHelperText, FormLabel, Chip, Input, InputLabel, FormControl, MenuItem, Select, Button, Paper, TextField } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { useEffect, useState } from "react";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -27,10 +27,11 @@ const ProductForm = ({
 }) => {
   const [currDeveloperValue, setCurrDeveloperValue] = useState("");
   const [buttonDisable, setButtonDisable] = useState(true);
+  const [developerError, setDeveloperError] = useState(false);
 
   // Determine if the save button should be active or not
   useEffect(() => {
-    let product = {
+    const product = {
       productName,
       productOwnerName,
       developers,
@@ -38,15 +39,18 @@ const ProductForm = ({
       startDate,
       methodology
     };
-    // If any are blank, submit is disabled
-    const values = Object.values(product);
-    console.log(values);
-    if (values.every(value => {
-      if (value && value.length !== 0) {
-        return true;
-      }
-      return false;
-    })) {
+
+    // To see if fields have improper values
+    const nameChecks = {
+      productName: productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA),
+      productOwnerName: productOwnerName.match(Constants.VALID_NAME_SCHEMA),
+      scrumMasterName: scrumMasterName.match(Constants.VALID_NAME_SCHEMA),
+    };
+
+    // If any are blank or improper, submit is disabled
+    const everyValueFilled = Object.values(product).every(value => value && value.length !== 0);
+    const everyFieldAcceptable = Object.values(nameChecks).every(name => name);
+    if (everyValueFilled && everyFieldAcceptable) {
       setButtonDisable(false);
     } else {
       setButtonDisable(true);
@@ -63,25 +67,46 @@ const ProductForm = ({
   // Keep developer field current
   const handleDeveloperChange = async (e) => {
     setCurrDeveloperValue(e.target.value);
+    let helperText = document.getElementById('developer-helper');
+    if (e.target.value !== '') {
+      if (developers.length < 5) {
+        if (e.target.value.match(Constants.VALID_PRODUCT_NAME_SCHEMA)) {
+          setDeveloperError(false);
+          helperText.innerHTML = 'Press Enter to add';
+          helperText.style.color = 'grey';
+        } else if (e.target.value.length < 2) {
+          setDeveloperError(true);
+          helperText.style.color = '#d32f2f';
+          helperText.innerHTML = `Minimum 2 characters.`;
+        } else {
+          setDeveloperError(true);
+          helperText.style.color = '#d32f2f';
+          helperText.innerHTML = `No special characters`;
+        }
+      } else {
+        setDeveloperError(true);
+        helperText.style.color = '#d32f2f';
+        helperText.innerHTML = 'Maximum 5 developers';
+      }
+    } else {
+      setDeveloperError(false);
+      helperText.innerHTML = 'Press Enter to add';
+      helperText.style.color = 'grey';
+    }
   };
 
   // Saving a developer chip value
   const saveValue = (e) => {
     // Check if value isn't blank
     // Check that there aren't too many to avoid spam
-    if (e.target.value !== '') {
+    if (e.target.value.length >= 2) {
       if (developers.length < 5) {
-        if (e.target.value.match(Constants.VALID_NAME_SCHEMA)) {
+        if (e.target.value.match(Constants.VALID_PRODUCT_NAME_SCHEMA)) {
           if (e.keyCode === 13) { // Enter key
-            setDevelopers([...developers, e.target.value]);
+            setDevelopers([...developers, e.target.value.trim()]);
             setCurrDeveloperValue('');
-            document.getElementById('developer-helper').innerHTML = 'Press Enter to add';
           }
-        } else {
-          document.getElementById('developer-helper').innerHTML = `Invalid name. Use only letters, punctuation (,.-'), and spaces.`;
         }
-      } else {
-        document.getElementById('developer-helper').innerHTML = 'Maximum 5 developers';
       }
     }
   }
@@ -110,13 +135,15 @@ const ProductForm = ({
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <InputLabel htmlFor="productName">Product Name</InputLabel>
-              <Input
+              <FormLabel htmlFor="productName">Product Name</FormLabel>
+              <TextField
                 id="productName"
                 name={'productName'}
                 value={productName}
+                error={!productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA) && productName !== ''}
+                helperText={!productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA) && productName !== '' ? 'No special characters. Minimum 2.' : ''}
                 onChange={(e) => {
-                  setProductName(e.target.value);
+                  setProductName(e.target.value.trim());
                 }}
                 aria-describedby="product-name-helper" />
               <FormHelperText id="product-name-helper"></FormHelperText>
@@ -124,13 +151,15 @@ const ProductForm = ({
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <InputLabel htmlFor="productOwnerName">Product-Owner Name</InputLabel>
-              <Input
+              <FormLabel htmlFor="productOwnerName">Product-Owner Name</FormLabel>
+              <TextField
                 id="productOwnerName"
                 name={'productOwnerName'}
                 value={productOwnerName}
+                error={!productOwnerName.match(Constants.VALID_NAME_SCHEMA) && productOwnerName !== ''}
+                helperText={!productOwnerName.match(Constants.VALID_NAME_SCHEMA) && productOwnerName !== '' ? 'No numbers or special characters. Minimum 2.' : ''}
                 onChange={(e) => {
-                  setProductOwnerName(e.target.value);
+                  setProductOwnerName(e.target.value.trim());
                 }}
                 aria-describedby="owner-name-helper" />
               <FormHelperText id="owner-name-helper"></FormHelperText>
@@ -138,13 +167,15 @@ const ProductForm = ({
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <InputLabel htmlFor="scrumMasterName">Scrum Master Name</InputLabel>
-              <Input
+              <FormLabel htmlFor="scrumMasterName">Scrum Master Name</FormLabel>
+              <TextField
                 id="scrumMasterName"
                 name={'scrumMasterName'}
                 value={scrumMasterName}
+                error={!scrumMasterName.match(Constants.VALID_NAME_SCHEMA) && scrumMasterName !== ''}
+                helperText={!scrumMasterName.match(Constants.VALID_NAME_SCHEMA) && scrumMasterName !== '' ? 'No numbers or special characters. Minimum 2.' : ''}
                 onChange={(e) => {
-                  setScrumMasterName(e.target.value);
+                  setScrumMasterName(e.target.value.trim());
                 }}
                 aria-describedby="scrum-master-helper" />
               <FormHelperText id="scrum-master-helper"></FormHelperText>
@@ -181,12 +212,13 @@ const ProductForm = ({
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <InputLabel htmlFor="developers">Developers</InputLabel>
-              <Input
+              <FormLabel htmlFor="developers">Developers</FormLabel>
+              <TextField
                 id="developers"
                 name="developers"
                 aria-describedby="developer-helper"
                 value={currDeveloperValue}
+                error={developerError}
                 onChange={handleDeveloperChange}
                 onKeyDown={saveValue}
               />
@@ -196,7 +228,7 @@ const ProductForm = ({
           <Grid xs={8}>
             <div className={"container"}>
               {developers.map((item, index) => (
-                <Chip key={index} size="small" onDelete={() => handleChipDelete(item, index)} label={item} />
+                <Chip key={index} size="medium" onDelete={() => handleChipDelete(item, index)} label={item} />
               ))}
             </div>
           </Grid>
