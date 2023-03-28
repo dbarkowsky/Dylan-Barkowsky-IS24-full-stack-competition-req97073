@@ -64,24 +64,31 @@ const ProductForm = ({
     }
   }
 
-  // Keep developer field current
+  // Keep developer field current and set helper text
   const handleDeveloperChange = async (e) => {
     setCurrDeveloperValue(e.target.value);
     let helperText = document.getElementById('developer-helper');
+    // Check not blank
     if (e.target.value !== '') {
+      // Check aren't too many chips added
       if (developers.length < 5) {
-        if (e.target.value.match(Constants.VALID_PRODUCT_NAME_SCHEMA)) {
-          setDeveloperError(false);
-          helperText.innerHTML = 'Press Enter to add';
-          helperText.style.color = 'grey';
-        } else if (e.target.value.length < 2) {
-          setDeveloperError(true);
-          helperText.style.color = '#d32f2f';
-          helperText.innerHTML = `Minimum 2 characters.`;
+        // Check that at least 2 characters
+        if (e.target.value.length >= 2) {
+          // Check matches schema
+          if (e.target.value.match(Constants.VALID_PRODUCT_NAME_SCHEMA)) {
+            setDeveloperError(false);
+            helperText.innerHTML = 'Press Enter to add';
+            helperText.style.color = 'grey';
+          } else {
+            // Then characters are included
+            setDeveloperError(true);
+            helperText.style.color = '#d32f2f';
+            helperText.innerHTML = `No special characters`;
+          }
         } else {
           setDeveloperError(true);
           helperText.style.color = '#d32f2f';
-          helperText.innerHTML = `No special characters`;
+          helperText.innerHTML = `Minimum 2 characters.`;
         }
       } else {
         setDeveloperError(true);
@@ -97,10 +104,11 @@ const ProductForm = ({
 
   // Saving a developer chip value
   const saveValue = (e) => {
-    // Check if value isn't blank
-    // Check that there aren't too many to avoid spam
+    // Check that there are at least 2 characters
     if (e.target.value.length >= 2) {
+      // Check that there aren't too many to avoid spam
       if (developers.length < 5) {
+        // Check that schema matches
         if (e.target.value.match(Constants.VALID_PRODUCT_NAME_SCHEMA)) {
           if (e.keyCode === 13) { // Enter key
             setDevelopers([...developers, e.target.value.trim()]);
