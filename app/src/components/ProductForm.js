@@ -1,4 +1,4 @@
-import { FormHelperText, FormLabel, Chip, Input, InputLabel, FormControl, MenuItem, Select, Button, Paper, TextField } from "@mui/material";
+import { FormHelperText, FormLabel, Chip, FormControl, MenuItem, Select, Button, Paper, TextField } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { useEffect, useState } from "react";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -154,7 +154,6 @@ const ProductForm = ({
                   setProductName(e.target.value.trim());
                 }}
                 aria-describedby="product-name-helper" />
-              <FormHelperText id="product-name-helper"></FormHelperText>
             </FormControl>
           </Grid>
           <Grid xs={4}>
@@ -170,7 +169,6 @@ const ProductForm = ({
                   setProductOwnerName(e.target.value.trim());
                 }}
                 aria-describedby="owner-name-helper" />
-              <FormHelperText id="owner-name-helper"></FormHelperText>
             </FormControl>
           </Grid>
           <Grid xs={4}>
@@ -186,7 +184,6 @@ const ProductForm = ({
                   setScrumMasterName(e.target.value.trim());
                 }}
                 aria-describedby="scrum-master-helper" />
-              <FormHelperText id="scrum-master-helper"></FormHelperText>
             </FormControl>
           </Grid>
           <Grid xs={4}>
@@ -246,8 +243,8 @@ const ProductForm = ({
           justifyContent: 'space-between'
         }}>
           <div id="left-buttons">
-            <Button component={Link} to={'/'} variant="outlined" sx={{ margin: '2em 1em' }}>Back</Button>
-            <Button type="submit" variant="contained" disabled={buttonDisable} sx={{ margin: '2em 0' }}>Save</Button>
+            <Button component={Link} to={'/'} variant="outlined" sx={{ margin: '2em 1em 0 0' }}>Back</Button>
+            <Button type="submit" variant="contained" disabled={buttonDisable} sx={{ marginTop: '2em' }}>Save</Button>
           </div>
           {
             editMode

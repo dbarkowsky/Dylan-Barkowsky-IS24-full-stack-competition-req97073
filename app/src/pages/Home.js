@@ -2,9 +2,16 @@ import ProductTable from "../components/ProductTable";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Constants from '../constants/Constants';
+import { TextField, InputAdornment, Select, MenuItem } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const Home = ({ setErrorControl }) => {
   const [products, setProducts] = useState([]);
+  const [searched, setSearched] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchField, setSearchField] = useState('scrumMaster');
+  const [showClearIcon, setShowClearIcon] = useState('none');
 
   // Get and sort products from server
   useEffect(() => {
@@ -21,10 +28,79 @@ const Home = ({ setErrorControl }) => {
     })();
   }, [setErrorControl]);
 
+  // Update filtered products based on searched value and searchField value
+  useEffect(() => {
+    switch (searchField) {
+      case 'scrumMaster':
+        setFilteredProducts(products.filter(product => product.scrumMasterName.toLowerCase().includes(searched.toLowerCase())));
+        break;
+      case 'developers':
+        setFilteredProducts(products.filter(product => product.developers.some(developer => developer.toLowerCase().includes(searched.toLowerCase()))));
+        break;
+      default:
+        break;
+    }
+  }, [searched, products, searchField]);
+
+  // Update filter value
+  const filterRows = (e) => {
+    setSearched(e.target.value);
+    setShowClearIcon(e.target.value ? 'flex' : 'none');
+  }
+
   return (
     <>
-      <h3>{`Total Products: ${products.length}`}</h3>
-      <ProductTable {...{ products }} />
+      <div id="button-wrapper" style={{
+        display: 'flex',
+        justifyContent: 'space-between'
+      }}>
+        <h3>{`Total Products: ${filteredProducts.length}`}</h3>
+        <div id="search-field" style={{ alignContent: 'center', paddingTop: '1em' }}>
+          <TextField
+            id="standard-search"
+            type="search"
+            variant="standard"
+            value={searched}
+            onChange={filterRows}
+            sx={{
+              minWidth: '15em'
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment
+                  position="end"
+                  style={{ display: showClearIcon }}
+                  onClick={() => { setSearched(''); setShowClearIcon('none') }}
+                >
+                  <ClearIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+          <Select
+            id="searchField"
+            name="searchField"
+            value={searchField}
+            onChange={(e) => {
+              setSearchField(e.target.value);
+            }}
+            sx={{
+              minWidth: '175px',
+              height: '2em',
+              marginLeft: '1em'
+            }}
+          >
+            <MenuItem value={'developers'}>Developers</MenuItem>
+            <MenuItem value={'scrumMaster'}>Scrum Master</MenuItem>
+          </Select>
+        </div>
+      </div>
+      <ProductTable products={filteredProducts} />
     </>
   );
 }

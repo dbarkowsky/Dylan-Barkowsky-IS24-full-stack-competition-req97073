@@ -13,7 +13,7 @@ import { Button } from '@mui/material';
 const ProductTable = ({ products }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table aria-label="simple table">
         <TableHead>
           <TableRow>
             <HeaderCell >Product Number</HeaderCell>
