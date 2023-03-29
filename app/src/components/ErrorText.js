@@ -7,7 +7,7 @@ const ErrorText = ({ disabled, text }) => {
   };
 
   return (
-    <p id="error-text" style={style}><b>Error: </b>{text}</p>
+    <p id='error-text' style={style}><b>Error: </b>{text}</p>
   );
 }
 

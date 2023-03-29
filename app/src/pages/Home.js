@@ -1,8 +1,8 @@
-import ProductTable from "../components/ProductTable";
+import ProductTable from '../components/ProductTable';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Constants from '../constants/Constants';
-import { TextField, InputAdornment, Select, MenuItem } from "@mui/material";
+import { TextField, InputAdornment, Select, MenuItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -49,16 +49,16 @@ const Home = ({ setErrorControl }) => {
 
   return (
     <>
-      <div id="button-wrapper" style={{
+      <div id='button-wrapper' style={{
         display: 'flex',
         justifyContent: 'space-between'
       }}>
         <h3>{`Total Products: ${filteredProducts.length}`}</h3>
-        <div id="search-field" style={{ alignContent: 'center', paddingTop: '1em' }}>
+        <div id='search-field' style={{ alignContent: 'center', paddingTop: '1em' }}>
           <TextField
-            id="standard-search"
-            type="search"
-            variant="standard"
+            id='standard-search'
+            type='search'
+            variant='standard'
             value={searched}
             onChange={filterRows}
             sx={{
@@ -66,13 +66,13 @@ const Home = ({ setErrorControl }) => {
             }}
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position='start'>
                   <SearchIcon />
                 </InputAdornment>
               ),
               endAdornment: (
                 <InputAdornment
-                  position="end"
+                  position='end'
                   style={{ display: showClearIcon }}
                   onClick={() => { setSearched(''); setShowClearIcon('none') }}
                 >
@@ -82,8 +82,8 @@ const Home = ({ setErrorControl }) => {
             }}
           />
           <Select
-            id="searchField"
-            name="searchField"
+            id='searchField'
+            name='searchField'
             value={searchField}
             onChange={(e) => {
               setSearchField(e.target.value);

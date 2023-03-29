@@ -1,4 +1,4 @@
-import { TableCell } from "@mui/material";
+import { TableCell } from '@mui/material';
 
 const HeaderCell = ({ children }) => (
   <TableCell sx={{

@@ -1,5 +1,5 @@
-import productSchema from "../models/product-schema.js";
-import { testData } from "../testData.js";
+import productSchema from '../models/product-schema.js';
+import { testData } from '../testData.js';
 
 let products = [...testData];
 let highestID = products.reduce((acc, cur) => cur.productId > acc.productId ? cur : acc).productId;

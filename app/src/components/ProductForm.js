@@ -1,12 +1,12 @@
-import { FormHelperText, FormLabel, Chip, FormControl, MenuItem, Select, Button, Paper, TextField } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { useEffect, useState } from "react";
+import { FormHelperText, FormLabel, Chip, FormControl, MenuItem, Select, Button, Paper, TextField } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2/Grid2';
+import { useEffect, useState } from 'react';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Link } from 'react-router-dom';
 import Constants from '../constants/Constants';
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 const ProductForm = ({
   handleSubmit,
@@ -25,7 +25,7 @@ const ProductForm = ({
   developers,
   editMode // Boolean (if it's the edit page)
 }) => {
-  const [currDeveloperValue, setCurrDeveloperValue] = useState("");
+  const [currDeveloperValue, setCurrDeveloperValue] = useState('');
   const [buttonDisable, setButtonDisable] = useState(true);
   const [developerError, setDeveloperError] = useState(false);
 
@@ -143,9 +143,9 @@ const ProductForm = ({
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <FormLabel htmlFor="productName">Product Name</FormLabel>
+              <FormLabel htmlFor='productName'>Product Name</FormLabel>
               <TextField
-                id="productName"
+                id='productName'
                 name={'productName'}
                 value={productName}
                 error={!productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA) && productName !== ''}
@@ -153,14 +153,14 @@ const ProductForm = ({
                 onChange={(e) => {
                   setProductName(e.target.value.trim());
                 }}
-                aria-describedby="product-name-helper" />
+                aria-describedby='product-name-helper' />
             </FormControl>
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <FormLabel htmlFor="productOwnerName">Product-Owner Name</FormLabel>
+              <FormLabel htmlFor='productOwnerName'>Product-Owner Name</FormLabel>
               <TextField
-                id="productOwnerName"
+                id='productOwnerName'
                 name={'productOwnerName'}
                 value={productOwnerName}
                 error={!productOwnerName.match(Constants.VALID_NAME_SCHEMA) && productOwnerName !== ''}
@@ -168,14 +168,14 @@ const ProductForm = ({
                 onChange={(e) => {
                   setProductOwnerName(e.target.value.trim());
                 }}
-                aria-describedby="owner-name-helper" />
+                aria-describedby='owner-name-helper' />
             </FormControl>
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <FormLabel htmlFor="scrumMasterName">Scrum Master Name</FormLabel>
+              <FormLabel htmlFor='scrumMasterName'>Scrum Master Name</FormLabel>
               <TextField
-                id="scrumMasterName"
+                id='scrumMasterName'
                 name={'scrumMasterName'}
                 value={scrumMasterName}
                 error={!scrumMasterName.match(Constants.VALID_NAME_SCHEMA) && scrumMasterName !== ''}
@@ -183,12 +183,12 @@ const ProductForm = ({
                 onChange={(e) => {
                   setScrumMasterName(e.target.value.trim());
                 }}
-                aria-describedby="scrum-master-helper" />
+                aria-describedby='scrum-master-helper' />
             </FormControl>
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <FormLabel htmlFor="startDate">Start Date</FormLabel>
+              <FormLabel htmlFor='startDate'>Start Date</FormLabel>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   onChange={(e) => { setStartDate(e.$d.toISOString()); }}
@@ -200,11 +200,11 @@ const ProductForm = ({
           </Grid>
           <Grid xs={8}>
             <FormControl sx={{ minWidth: 200 }}>
-              <FormLabel htmlFor="methodology">Methodology</FormLabel>
+              <FormLabel htmlFor='methodology'>Methodology</FormLabel>
               <Select
-                id="methodology"
-                name="methodology"
-                label="Methodology"
+                id='methodology'
+                name='methodology'
+                label='Methodology'
                 value={methodology}
                 onChange={(e) => {
                   setMethodology(e.target.value);
@@ -217,39 +217,39 @@ const ProductForm = ({
           </Grid>
           <Grid xs={4}>
             <FormControl sx={fieldStyle}>
-              <FormLabel htmlFor="developers">Developers</FormLabel>
+              <FormLabel htmlFor='developers'>Developers</FormLabel>
               <TextField
-                id="developers"
-                name="developers"
-                aria-describedby="developer-helper"
+                id='developers'
+                name='developers'
+                aria-describedby='developer-helper'
                 value={currDeveloperValue}
                 error={developerError}
                 onChange={handleDeveloperChange}
                 onKeyDown={saveValue}
               />
-              <FormHelperText id="developer-helper">Press Enter to add</FormHelperText>
+              <FormHelperText id='developer-helper'>Press Enter to add</FormHelperText>
             </FormControl>
           </Grid>
           <Grid xs={8}>
-            <div className={"container"}>
+            <div className={'container'}>
               {developers.map((item, index) => (
-                <Chip key={index} size="medium" onDelete={() => handleChipDelete(item, index)} label={item} />
+                <Chip key={index} size='medium' onDelete={() => handleChipDelete(item, index)} label={item} />
               ))}
             </div>
           </Grid>
         </Grid>
-        <div id="button-wrapper" style={{
+        <div id='button-wrapper' style={{
           display: 'flex',
           justifyContent: 'space-between'
         }}>
-          <div id="left-buttons">
-            <Button component={Link} to={'/'} variant="outlined" sx={{ margin: '2em 1em 0 0' }}>Back</Button>
-            <Button type="submit" variant="contained" disabled={buttonDisable} sx={{ marginTop: '2em' }}>Save</Button>
+          <div id='left-buttons'>
+            <Button component={Link} to={'/'} variant='outlined' sx={{ margin: '2em 1em 0 0' }}>Back</Button>
+            <Button type='submit' variant='contained' disabled={buttonDisable} sx={{ marginTop: '2em' }}>Save</Button>
           </div>
           {
             editMode
               ? <Button
-                variant="outlined"
+                variant='outlined'
                 color='error'
                 onClick={handleDelete}
                 sx={{

@@ -1,6 +1,6 @@
 import './App.css';
 import Home from './pages/Home';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AddProduct from './pages/AddProduct';
 import EditProduct from './pages/EditProduct';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -19,10 +19,10 @@ const App = () => {
           <NavBar />
           <ErrorText text={errorControl.text} disabled={errorControl.disabled} ></ErrorText>
           <Routes>
-            <Route path="/">
+            <Route path='/'>
               <Route index element={<Home {...{ setErrorControl }} />} />
-              <Route path="product/:productId" element={<EditProduct {...{ setErrorControl }} />} />
-              <Route path="product/new" element={<AddProduct {...{ setErrorControl }} />} />
+              <Route path='product/:productId' element={<EditProduct {...{ setErrorControl }} />} />
+              <Route path='product/new' element={<AddProduct {...{ setErrorControl }} />} />
             </Route>
           </Routes>
         </div>

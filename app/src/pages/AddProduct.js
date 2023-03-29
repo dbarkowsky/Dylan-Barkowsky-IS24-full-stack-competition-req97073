@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import productSchema from '../schemas/productSchema';
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Constants from '../constants/Constants';
-import ProductForm from "../components/ProductForm";
+import ProductForm from '../components/ProductForm';
 
 const AddProduct = ({ setErrorControl }) => {
-  const [methodology, setMethodology] = useState("");
+  const [methodology, setMethodology] = useState('');
   const [developers, setDevelopers] = useState([]);
   const [startDate, setStartDate] = useState(new Date(Date.now()).toISOString()); // Must fill with something, no undefined allowed
-  const [productName, setProductName] = useState("");
-  const [productOwnerName, setProductOwnerName] = useState("");
-  const [scrumMasterName, setScrumMasterName] = useState("");
+  const [productName, setProductName] = useState('');
+  const [productOwnerName, setProductOwnerName] = useState('');
+  const [scrumMasterName, setScrumMasterName] = useState('');
 
   const navigate = useNavigate();
 

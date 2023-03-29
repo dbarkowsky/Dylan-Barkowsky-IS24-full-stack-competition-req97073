@@ -13,7 +13,7 @@ import { Button } from '@mui/material';
 const ProductTable = ({ products }) => {
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="simple table">
+      <Table aria-label='simple table'>
         <TableHead>
           <TableRow>
             <HeaderCell >Product Number</HeaderCell>
@@ -32,7 +32,7 @@ const ProductTable = ({ products }) => {
               key={row.productId}
               sx={{ '&:last-child td, &:last-child th': { border: 0 }, backgroundColor: index % 2 === 0 ? 'white' : '#ededed' }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell component='th' scope='row'>
                 {row.productId}
               </TableCell>
               <TableCell >{row.productName}</TableCell>
