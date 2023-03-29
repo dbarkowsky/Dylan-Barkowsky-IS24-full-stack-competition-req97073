@@ -23,7 +23,7 @@ const NavBar = () => {
       <Button
         component={Link}
         to={'/product/new'}
-        variant='outlined'
+        variant='contained'
         sx={{
           marginTop: '2em',
         }}
