@@ -77,13 +77,13 @@ const ProductForm = ({
           // Check matches schema
           if (e.target.value.match(Constants.VALID_PRODUCT_NAME_SCHEMA)) {
             setDeveloperError(false);
-            helperText.innerHTML = 'Press Enter to add';
+            helperText.innerHTML = 'Press Enter to add.';
             helperText.style.color = 'grey';
           } else {
             // Then characters are included
             setDeveloperError(true);
             helperText.style.color = '#d32f2f';
-            helperText.innerHTML = `No special characters`;
+            helperText.innerHTML = `No special characters.`;
           }
         } else {
           setDeveloperError(true);
@@ -93,11 +93,11 @@ const ProductForm = ({
       } else {
         setDeveloperError(true);
         helperText.style.color = '#d32f2f';
-        helperText.innerHTML = 'Maximum 5 developers';
+        helperText.innerHTML = 'Maximum 5 developers.';
       }
     } else {
       setDeveloperError(false);
-      helperText.innerHTML = 'Press Enter to add';
+      helperText.innerHTML = 'Press Enter to add.';
       helperText.style.color = 'grey';
     }
   };
