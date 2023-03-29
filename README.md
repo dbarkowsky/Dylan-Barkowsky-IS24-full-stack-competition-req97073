@@ -26,12 +26,16 @@ I highly recommend setting the `.env` files to avoid a conflict on port `3000`.
 
 ## Running Instructions
 To run the application in your local development environment:
+
+Start the API first:
 ### API
 1. Navigate to the `/api` folder.
 2. Run the command `npm ci` to install packages.
 3. Run the command `npm run dev` to start the API.
 
 This should report back with `Server started on port 3000.`
+
+Then start the App:
 
 ### App
 
@@ -42,4 +46,4 @@ In a separate terminal:
 
 This should report back with `Compiled successfully!` and will open the page in your browser. 
 
-If not, navigate to `http://localhost:3000`, assuming that's the port you used in the `.env` file.
+If not, navigate to `http://localhost:8080`, assuming that's the port you used in the `.env` file.
