@@ -4,14 +4,12 @@ import axios from 'axios';
 import Constants from '../constants/Constants';
 import { TextField, InputAdornment, Select, MenuItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
 
 const Home = ({ setErrorControl }) => {
   const [products, setProducts] = useState([]);
   const [searched, setSearched] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchField, setSearchField] = useState('scrumMaster');
-  const [showClearIcon, setShowClearIcon] = useState('none');
 
   // Get and sort products from server
   useEffect(() => {
@@ -44,7 +42,6 @@ const Home = ({ setErrorControl }) => {
   // Update filter value
   const filterRows = (e) => {
     setSearched(e.target.value);
-    setShowClearIcon(e.target.value ? 'flex' : 'none');
   }
 
   return (
@@ -68,15 +65,6 @@ const Home = ({ setErrorControl }) => {
               startAdornment: (
                 <InputAdornment position='start'>
                   <SearchIcon />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment
-                  position='end'
-                  style={{ display: showClearIcon }}
-                  onClick={() => { setSearched(''); setShowClearIcon('none') }}
-                >
-                  <ClearIcon />
                 </InputAdornment>
               )
             }}
