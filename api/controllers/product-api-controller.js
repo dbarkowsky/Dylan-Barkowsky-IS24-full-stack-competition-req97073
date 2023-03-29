@@ -5,7 +5,11 @@ let products = [...testData];
 let highestID = products.reduce((acc, cur) => cur.productId > acc.productId ? cur : acc).productId;
 
 const getProducts = (req, res) => {
-    return res.status(200).json(products);
+    if (products) {
+        return res.status(200).json(products);
+    } else {
+        return res.status(404).send('Products could not be found.');
+    }
 }
 
 const getProduct = (req, res) => {

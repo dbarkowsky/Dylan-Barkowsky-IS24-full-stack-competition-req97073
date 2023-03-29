@@ -1,0 +1,270 @@
+components:
+### SCHEMAS ###
+  schemas:
+    ProductReceived:
+      type: object
+      description: A single product object.
+      properties:
+        productId:
+          type: integer
+          description: The product's ID number.
+          example: 23
+        productName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          pattern: ^[a-zA-Z0-9]+(([',. -][a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$
+          description: The name of the product.
+          example: Parks and Recreation
+        productOwnerName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          pattern: ^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$
+          description: The product owner's name.
+          example: Leslie Knope
+        scrumMasterName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          pattern: ^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$
+          description: The scrum master's name.
+          example: Ben Wyatt
+        startDate:
+          type: string
+          description: The date the product started.
+          example: 2009/04/09
+        methodology:
+          type: string
+          pattern: ^(Agile|Waterfall)$
+          description: The methodology used for the product.
+          example: Agile
+        developers:
+          type: array
+          description: Developers who worked on the product.
+          items:
+            type: string
+            minLength: 2
+            maxLength: 50
+            pattern: ^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$
+          example:
+            - Ron Swanson
+            - April Ludgate
+            - Ann Perkins
+            - Jean-Ralphio Saperstein
+            - Andy Dwyer
+
+    ProductSent:
+      type: object
+      description: A single product object.
+      required:
+        - productName
+        - productOwnerName
+        - scrumMasterName
+        - startDate
+        - methodology
+        - developers
+      properties:
+        productName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          pattern: ^[a-zA-Z0-9]+(([',. -][a-zA-Z0-9 ])?[a-zA-Z0-9]*)*$
+          description: The name of the product.
+          example: Parks and Recreation
+        productOwnerName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          pattern: ^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$
+          description: The product owner's name.
+          example: Leslie Knope
+        scrumMasterName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          pattern: ^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$
+          description: The scrum master's name.
+          example: Ben Wyatt
+        startDate:
+          type: string
+          description: The date the product started.
+          example: 2009/04/09
+        methodology:
+          type: string
+          pattern: ^(Agile|Waterfall)$
+          description: The methodology used for the product.
+          example: Agile
+        developers:
+          type: array
+          description: Developers who worked on the product.
+          items:
+            type: string
+            minLength: 2
+            maxLength: 50
+            pattern: ^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$
+          example:
+            - Ron Swanson
+            - April Ludgate
+            - Ann Perkins
+            - Jean-Ralphio Saperstein
+            - Andy Dwyer
+### RESPONSES ### 
+  responses:
+    400RequestBodyMalformed:
+      description: Request body is malformed or missing.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: Bad Request. The message in the body of the Request is either missing or malformed.
+    404ProductNotFound:
+      description: Product with matching productId could not be found.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: 'Product not found.'
+
+    429TooManyRequests:
+      description: Express rate limiter reached. Too many requests.
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: 'Too many requests, please try again later.'
+### PATHS ###
+paths:
+  /products:
+    get:
+      tags:
+        - Products
+      summary: Returns a list of all products.
+      description: Returns a list of all product objects. 
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductReceived'
+        '404':
+          description: Products not found.
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'Products could not be found.'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+
+    post:
+      tags:
+        - Products
+      summary: Inserts a new product into the product list.
+      description: Inserts a new product into the product list.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSent'
+      responses:
+        '201':
+          description: Product was created successfully.
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductReceived'
+        '400':
+          $ref: '#/components/responses/400RequestBodyMalformed'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+
+  /products/{productId}:
+    get:
+      tags:
+        - Products
+      summary: Returns a single product.
+      description: Returns a single product object based on the productId.
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+          required: true
+          description: Product ID number.
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductReceived'
+        '404':
+          $ref: '#/components/responses/404ProductNotFound'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+
+    put:
+      tags:
+        - Products
+      summary: Updates a single product.
+      description: Updates a single product object based on the productId.
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+          required: true
+          description: Product ID number.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSent'
+      responses:
+        '200':
+          description: OK
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductReceived'
+        '403':
+          description: Forbidden (Cannot change start date)
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Start date may not be altered.
+        '404':
+          $ref: '#/components/responses/404ProductNotFound'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+
+    delete:
+      tags:
+        - Products
+      summary: Deletes a single product.
+      description: Deletes a single product object based on the productId.
+      parameters:
+        - in: path
+          name: productId
+          schema:
+            type: integer
+          required: true
+          description: Product ID number.
+      responses:
+        '204':
+          description: No Content (Delete Successful)
+          content: 
+            text/plain:
+              schema:
+                type: string
+                example: Product {productId} deleted.
+        '404':
+          $ref: '#/components/responses/404ProductNotFound'
+        '429':
+          $ref: '#/components/responses/429TooManyRequests'
+          

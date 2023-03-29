@@ -1,0 +1,15 @@
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Checks if API is healthy and responding.
+      description: Returns a string confirming API is healthy. Otherwise, no response is expected.
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'API is up and running!'
