@@ -8,6 +8,7 @@ import apiRouter from './routes/api-router.js';
 import rateLimit from 'express-rate-limit';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
+import Constants from './constants/Constants.js';
 
 const app = express();
 
@@ -26,7 +27,7 @@ const OPENAPI_OPTIONS = {
             version: '1.0.0',
             description: 'API documentation for Product Tracker',
         },
-        servers: [{ url: `http://${process.env.HOSTNAME}:${process.env.PORT}/api` }],
+        servers: [{ url: `http://${Constants.HOSTNAME}:${Constants.PORT}/api` }],
     },
     apis: ['./docs/*.yaml'],
 };

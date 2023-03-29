@@ -3,7 +3,7 @@
 ## Setup
 There are two `.env` files that you can choose to create and populate. 
 
-If you choose not to, the API will run on port `3000` by default, and the frontend will choose a new port for itself using a default hostname of `localhost` and default port of `3000` for the API connection.
+If you choose not to create `.env` files, the API values will match the examples shown in the tables below, but the frontend will choose a new port for itself after attempting port `3000` and finding a collision.
 
 I highly recommend setting the `.env` files to avoid a conflict on port `3000`.
 
@@ -15,13 +15,14 @@ I highly recommend setting the `.env` files to avoid a conflict on port `3000`.
 |---|---|---|
 |  PORT | 8080  | The port the app will use.|
 |  API_PORT | 3000  | The port the app contacts the API on. |
-| HOSTNAME | localhost | The hostname of the API. |
+| HOSTNAME | localhost | The hostname for the API. |
 
 /api/.env
 
 |  Variable | Example  | Description |
 |---|---|---|
 |  PORT | 3000  | The port the API will use.|
+| HOSTNAME | localhost | The hostname for the API. |
 
 ## Running Instructions
 To run the application in your local development environment:

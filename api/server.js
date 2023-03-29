@@ -1,8 +1,7 @@
+import Constants from './constants/Constants.js';
 import app from './express.js';
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, (err) => {
+app.listen(Constants.PORT, (err) => {
     if (err) console.log(err);
-    console.info(`Server started on port ${port}.`);
+    console.info(`Server started on port ${Constants.PORT}.`);
 });
