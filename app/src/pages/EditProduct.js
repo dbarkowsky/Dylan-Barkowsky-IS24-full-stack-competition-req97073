@@ -27,7 +27,6 @@ const EditProduct = ({ setErrorControl }) => {
           method: `get`,
         }
         let response = await axios(axiosReqConfig);
-        console.log(response, 'hi');
         if (response.status === 200) {
           // Populate values with existing record
           let {
@@ -47,7 +46,6 @@ const EditProduct = ({ setErrorControl }) => {
           setMethodology(methodology);
         }
       } catch (e) {
-        console.log(e);
         setErrorControl({ disabled: false, text: `Either this product does not exist or the API is unreachable. Contact your administrator or try again later.` });
       }
     })();
@@ -87,8 +85,8 @@ const EditProduct = ({ setErrorControl }) => {
       }
     } catch (e) {
       if (e.name === 'verify') {
+        // Live form validation should keep this from ever running, but just in case.
         setErrorControl({ disabled: false, text: `The product has fields with invalid values. Please see the highlighted fields and make the suggested corrections.` });
-
       } else {
         setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
       }
@@ -111,7 +109,6 @@ const EditProduct = ({ setErrorControl }) => {
         setErrorControl({ disabled: false, text: `That product could not be found. Please check that the product still exists.` });
       }
     } catch (e) {
-      console.log(e);
       setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
     }
   }

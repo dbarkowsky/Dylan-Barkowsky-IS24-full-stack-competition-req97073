@@ -22,7 +22,6 @@ const Home = ({ setErrorControl }) => {
         setProducts(data.sort((a, b) => a.productId - b.productId));
         setErrorControl({ disabled: true });
       } catch (error) {
-        console.log('API Error: ' + error);
         setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
       }
     })();

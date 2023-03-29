@@ -51,10 +51,9 @@ const AddProduct = ({ setErrorControl }) => {
         setErrorControl({ disabled: true });
       }
     } catch (e) {
-      console.log(e)
       if (e.name === 'verify') {
+        // Live form validation should keep this from ever running, but just in case.
         setErrorControl({ disabled: false, text: `The product has fields with invalid values. Please see the highlighted fields and make the suggested corrections.` });
-
       } else {
         setErrorControl({ disabled: false, text: `We're sorry. The API could not be reached. Contact your administrator or try again later.` });
       }
