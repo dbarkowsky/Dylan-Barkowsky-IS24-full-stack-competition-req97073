@@ -68,8 +68,8 @@ const putProduct = async (req, res) => {
 
         // Update object
         products[location] = {
-            productId,
-            ...product
+            ...product,
+            productId
         }
 
         return res.status(200).json(product);
@@ -85,7 +85,7 @@ const postProduct = async (req, res) => {
         // Validate incoming product
         let product = await productSchema.validate(req.body);
         // Get new id and add to data
-        product = { productId: ++highestID, ...product };
+        product = { ...product, productId: ++highestID };
         products.push(product);
 
         return res.status(201).json(product);
