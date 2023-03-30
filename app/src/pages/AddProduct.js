@@ -6,12 +6,14 @@ import Constants from '../constants/Constants';
 import ProductForm from '../components/ProductForm';
 
 const AddProduct = ({ setErrorControl }) => {
-  const [methodology, setMethodology] = useState('');
-  const [developers, setDevelopers] = useState([]);
-  const [startDate, setStartDate] = useState(new Date(Date.now()).toISOString()); // Must fill with something, no undefined allowed
-  const [productName, setProductName] = useState('');
-  const [productOwnerName, setProductOwnerName] = useState('');
-  const [scrumMasterName, setScrumMasterName] = useState('');
+  const [product, setProduct] = useState({
+    productName: '',
+    productOwnerName: '',
+    developers: [],
+    scrumMasterName: '',
+    startDate: new Date(Date.now()).toISOString(),
+    methodology: ''
+  });
 
   const navigate = useNavigate();
 
@@ -22,19 +24,11 @@ const AddProduct = ({ setErrorControl }) => {
   // Submits product as post request
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let product = {
-      productName,
-      productOwnerName,
-      developers,
-      scrumMasterName,
-      startDate,
-      methodology
-    };
 
     let response;
     try {
       // Validate form data
-      product = await productSchema.validate(product).catch(() => {
+      let validProduct = await productSchema.validate(product).catch(() => {
         // eslint-disable-next-line
         throw { name: 'verify' };
       });
@@ -43,7 +37,7 @@ const AddProduct = ({ setErrorControl }) => {
       const axiosReqConfig = {
         url: `http://${Constants.HOSTNAME}:${Constants.API_PORT}/api/products`,
         method: `post`,
-        data: product
+        data: validProduct
       }
       response = await axios(axiosReqConfig);
       if (response.status === 201) {
@@ -64,18 +58,8 @@ const AddProduct = ({ setErrorControl }) => {
     <ProductForm
       {...{
         handleSubmit,
-        setProductName,
-        productName,
-        setProductOwnerName,
-        productOwnerName,
-        setScrumMasterName,
-        scrumMasterName,
-        setStartDate,
-        startDate,
-        setMethodology,
-        methodology,
-        setDevelopers,
-        developers,
+        product,
+        setProduct,
       }}
     />
   );

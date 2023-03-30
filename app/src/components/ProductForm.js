@@ -11,18 +11,8 @@ import dayjs from 'dayjs';
 const ProductForm = ({
   handleSubmit,
   handleDelete, // Only used by edit page
-  setProductName,
-  productName,
-  setProductOwnerName,
-  productOwnerName,
-  setScrumMasterName,
-  scrumMasterName,
-  setStartDate,
-  startDate,
-  setMethodology,
-  methodology,
-  setDevelopers,
-  developers,
+  product,
+  setProduct,
   editMode // Boolean (if it's the edit page)
 }) => {
   const [currDeveloperValue, setCurrDeveloperValue] = useState('');
@@ -31,20 +21,11 @@ const ProductForm = ({
 
   // Determine if the save button should be active or not
   useEffect(() => {
-    const product = {
-      productName,
-      productOwnerName,
-      developers,
-      scrumMasterName,
-      startDate,
-      methodology
-    };
-
     // To see if fields have improper values
     const nameChecks = {
-      productName: productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA),
-      productOwnerName: productOwnerName.match(Constants.VALID_NAME_SCHEMA),
-      scrumMasterName: scrumMasterName.match(Constants.VALID_NAME_SCHEMA),
+      productName: product.productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA),
+      productOwnerName: product.productOwnerName.match(Constants.VALID_NAME_SCHEMA),
+      scrumMasterName: product.scrumMasterName.match(Constants.VALID_NAME_SCHEMA),
     };
 
     // If any are blank or improper, submit is disabled
@@ -55,7 +36,7 @@ const ProductForm = ({
     } else {
       setButtonDisable(true);
     }
-  }, [productName, productOwnerName, scrumMasterName, developers, methodology, startDate])
+  }, [product])
 
   // Prevent form from submitting when adding developer chips
   const handleKeyDown = (e) => {
@@ -71,7 +52,7 @@ const ProductForm = ({
     // Check not blank
     if (e.target.value !== '') {
       // Check aren't too many chips added
-      if (developers.length < 5) {
+      if (product.developers.length < 5) {
         // Check that at least 2 characters
         if (e.target.value.length >= 2) {
           // Check matches schema
@@ -107,11 +88,14 @@ const ProductForm = ({
     // Check that there are at least 2 characters
     if (e.target.value.length >= 2) {
       // Check that there aren't too many to avoid spam
-      if (developers.length < 5) {
+      if (product.developers.length < 5) {
         // Check that schema matches
         if (e.target.value.match(Constants.VALID_PRODUCT_NAME_SCHEMA)) {
           if (e.keyCode === 13) { // Enter key
-            setDevelopers([...developers, e.target.value.trim()]);
+            setProduct({
+              ...product,
+              developers: [...product.developers, e.target.value.trim()]
+            })
             setCurrDeveloperValue('');
           }
         }
@@ -121,9 +105,12 @@ const ProductForm = ({
 
   // Deletion of developer chips
   const handleChipDelete = (item, index) => {
-    let arr = [...developers]
+    let arr = [...product.developers]
     arr.splice(index, 1)
-    setDevelopers(arr)
+    setProduct({
+      ...product,
+      developers: arr
+    })
   }
 
   const fieldStyle = {
@@ -147,11 +134,14 @@ const ProductForm = ({
               <TextField
                 id='productName'
                 name={'productName'}
-                value={productName}
-                error={!productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA) && productName !== ''}
-                helperText={!productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA) && productName !== '' ? 'No special characters. Minimum 2.' : ''}
+                value={product.productName}
+                error={!product.productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA) && product.productName !== ''}
+                helperText={!product.productName.match(Constants.VALID_PRODUCT_NAME_SCHEMA) && product.productName !== '' ? 'No special characters. Minimum 2.' : ''}
                 onChange={(e) => {
-                  setProductName(e.target.value.trim());
+                  setProduct({
+                    ...product,
+                    productName: e.target.value.trim()
+                  });
                 }}
                 aria-describedby='product-name-helper' />
             </FormControl>
@@ -162,11 +152,14 @@ const ProductForm = ({
               <TextField
                 id='productOwnerName'
                 name={'productOwnerName'}
-                value={productOwnerName}
-                error={!productOwnerName.match(Constants.VALID_NAME_SCHEMA) && productOwnerName !== ''}
-                helperText={!productOwnerName.match(Constants.VALID_NAME_SCHEMA) && productOwnerName !== '' ? 'No numbers or special characters. Minimum 2.' : ''}
+                value={product.productOwnerName}
+                error={!product.productOwnerName.match(Constants.VALID_NAME_SCHEMA) && product.productOwnerName !== ''}
+                helperText={!product.productOwnerName.match(Constants.VALID_NAME_SCHEMA) && product.productOwnerName !== '' ? 'No numbers or special characters. Minimum 2.' : ''}
                 onChange={(e) => {
-                  setProductOwnerName(e.target.value.trim());
+                  setProduct({
+                    ...product,
+                    productOwnerName: e.target.value.trim()
+                  });
                 }}
                 aria-describedby='owner-name-helper' />
             </FormControl>
@@ -177,11 +170,14 @@ const ProductForm = ({
               <TextField
                 id='scrumMasterName'
                 name={'scrumMasterName'}
-                value={scrumMasterName}
-                error={!scrumMasterName.match(Constants.VALID_NAME_SCHEMA) && scrumMasterName !== ''}
-                helperText={!scrumMasterName.match(Constants.VALID_NAME_SCHEMA) && scrumMasterName !== '' ? 'No numbers or special characters. Minimum 2.' : ''}
+                value={product.scrumMasterName}
+                error={!product.scrumMasterName.match(Constants.VALID_NAME_SCHEMA) && product.scrumMasterName !== ''}
+                helperText={!product.scrumMasterName.match(Constants.VALID_NAME_SCHEMA) && product.scrumMasterName !== '' ? 'No numbers or special characters. Minimum 2.' : ''}
                 onChange={(e) => {
-                  setScrumMasterName(e.target.value.trim());
+                  setProduct({
+                    ...product,
+                    scrumMasterName: e.target.value.trim()
+                  });
                 }}
                 aria-describedby='scrum-master-helper' />
             </FormControl>
@@ -191,8 +187,13 @@ const ProductForm = ({
               <FormLabel htmlFor='startDate'>Start Date</FormLabel>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  onChange={(e) => { setStartDate(e.$d.toISOString()); }}
-                  value={dayjs(startDate)}
+                  onChange={(e) => {
+                    setProduct({
+                      ...product,
+                      startDate: e.$d.toISOString()
+                    });
+                  }}
+                  value={dayjs(product.startDate)}
                   disabled={editMode}
                 />
               </LocalizationProvider>
@@ -205,9 +206,12 @@ const ProductForm = ({
                 id='methodology'
                 name='methodology'
                 label='Methodology'
-                value={methodology}
+                value={product.methodology}
                 onChange={(e) => {
-                  setMethodology(e.target.value);
+                  setProduct({
+                    ...product,
+                    methodology: e.target.value
+                  });
                 }}
               >
                 <MenuItem value={'Agile'}>Agile</MenuItem>
@@ -232,7 +236,7 @@ const ProductForm = ({
           </Grid>
           <Grid xs={8}>
             <div className={'container'}>
-              {developers.map((item, index) => (
+              {product.developers.map((item, index) => (
                 <Chip key={index} size='medium' onDelete={() => handleChipDelete(item, index)} label={item} />
               ))}
             </div>

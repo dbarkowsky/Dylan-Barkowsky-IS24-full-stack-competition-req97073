@@ -6,12 +6,14 @@ import Constants from '../constants/Constants';
 import ProductForm from '../components/ProductForm';
 
 const EditProduct = ({ setErrorControl }) => {
-  const [methodology, setMethodology] = useState('');
-  const [developers, setDevelopers] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [productName, setProductName] = useState('');
-  const [productOwnerName, setProductOwnerName] = useState('');
-  const [scrumMasterName, setScrumMasterName] = useState('');
+  const [product, setProduct] = useState({
+    productName: '',
+    productOwnerName: '',
+    developers: [],
+    scrumMasterName: '',
+    startDate: new Date(Date.now()).toISOString(),
+    methodology: ''
+  });
 
   const navigate = useNavigate();
 
@@ -29,21 +31,10 @@ const EditProduct = ({ setErrorControl }) => {
         let response = await axios(axiosReqConfig);
         if (response.status === 200) {
           // Populate values with existing record
-          let {
-            productName,
-            productOwnerName,
-            scrumMasterName,
-            developers,
-            startDate,
-            methodology
-          } = response.data;
-
-          setProductName(productName);
-          setProductOwnerName(productOwnerName);
-          setScrumMasterName(scrumMasterName);
-          setDevelopers(developers);
-          setStartDate(startDate);
-          setMethodology(methodology);
+          // Remove productId for this
+          const retrievedProduct = response.data;
+          const { productId: _, ...productMinusID } = retrievedProduct;
+          setProduct(productMinusID);
         }
       } catch (e) {
         setErrorControl({ disabled: false, text: `Either this product does not exist or the API is unreachable. Contact your administrator or try again later.` });
@@ -54,24 +45,16 @@ const EditProduct = ({ setErrorControl }) => {
   // Submit altered product as put request
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let product = {
-      productName,
-      productOwnerName,
-      developers,
-      scrumMasterName,
-      startDate,
-      methodology
-    };
 
     try {
-      product = await productSchema.validate(product).catch(() => {
+      let validProduct = await productSchema.validate(product).catch(() => {
         // eslint-disable-next-line
         throw { name: 'verify' };
       });
       const axiosReqConfig = {
         url: `http://${Constants.HOSTNAME}:${Constants.API_PORT}/api/products/${productId}`,
         method: `put`,
-        data: product
+        data: validProduct
       }
       let response = await axios(axiosReqConfig);
       if (response.status === 200) {
@@ -119,18 +102,8 @@ const EditProduct = ({ setErrorControl }) => {
       {...{
         handleSubmit,
         handleDelete,
-        setProductName,
-        productName,
-        setProductOwnerName,
-        productOwnerName,
-        setScrumMasterName,
-        scrumMasterName,
-        setStartDate,
-        startDate,
-        setMethodology,
-        methodology,
-        setDevelopers,
-        developers,
+        product,
+        setProduct
       }}
     />
   );
